@@ -13,5 +13,6 @@ module.exports = {
     sourceType: 'module'
   },
   plugins: ['react', '@typescript-eslint'],
+  ignorePatterns: ['coverage/**'],
   rules: {}
 };
