@@ -1,0 +1,24 @@
+name: Publish Site
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Publish site
+        uses: actions/setup-node@v1
+        with:
+          node-version: 15.x
+      - run: yarn install
+      - run: yarn prettier --check .
+      - run: yarn test
+      - run: yarn deploy
