@@ -1,6 +1,6 @@
 import React from 'react';
 import { Amplify } from 'aws-amplify';
-import { WishlistsContainer } from './wishlists/WishlistsContainer';
+import { HomeContainer } from './home/HomeContainer';
 import {
   ConfirmSignIn,
   ConfirmSignUp,
@@ -19,7 +19,7 @@ Amplify.configure({
   aws_user_pools_web_client_id: process.env.REACT_APP_COGNITO_APP_CLIENT_ID
 });
 
-const App: React.FC = () => <WishlistsContainer />;
+const App: React.FC = () => <HomeContainer />;
 
 export default withAuthenticator(App, false, [
   <LoginContainer key={1} />,
