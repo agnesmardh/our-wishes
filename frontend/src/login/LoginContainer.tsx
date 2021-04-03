@@ -4,10 +4,10 @@ import styled from 'styled-components';
 import { Auth } from 'aws-amplify';
 
 const handleLogin = async (username: string, password: string) => {
-  console.log('login', username, password);
+  console.log('login', username);
   try {
-    await Auth.signIn(username, password);
-    console.log('success');
+    const token = await Auth.signIn(username, password);
+    console.log('success', token);
   } catch (error) {
     console.log('fail', error);
   }
