@@ -24,6 +24,10 @@ jobs:
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    
 
     strategy:
       fail-fast: false
