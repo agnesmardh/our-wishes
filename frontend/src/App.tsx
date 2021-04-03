@@ -1,6 +1,17 @@
 import React from 'react';
-import { LoginContainer } from './login/LoginContainer';
 import { Amplify } from 'aws-amplify';
+import { HomeContainer } from './home/HomeContainer';
+import {
+  ConfirmSignIn,
+  ConfirmSignUp,
+  ForgotPassword,
+  RequireNewPassword,
+  SignUp,
+  VerifyContact,
+  withAuthenticator
+} from 'aws-amplify-react';
+
+import { LoginContainer } from './login/LoginContainer';
 
 Amplify.configure({
   aws_cognito_region: process.env.REACT_APP_COGNITO_REGION,
@@ -8,4 +19,14 @@ Amplify.configure({
   aws_user_pools_web_client_id: process.env.REACT_APP_COGNITO_APP_CLIENT_ID
 });
 
-export const App: React.FC = () => <LoginContainer />;
+const App: React.FC = () => <HomeContainer />;
+
+export default withAuthenticator(App, false, [
+  <LoginContainer key={1} />,
+  <ConfirmSignIn key={2} />,
+  <VerifyContact key={3} />,
+  <SignUp key={4} />,
+  <ConfirmSignUp key={5} />,
+  <ForgotPassword key={6} />,
+  <RequireNewPassword key={7} />
+]);

@@ -1,11 +1,14 @@
 import { Button, Form } from 'react-bootstrap';
 import React, { useState } from 'react';
+import styled from 'styled-components';
 
 interface Props {
   handleLogin: (username: string, password: string) => void;
+  loading: boolean;
+  errorMessage: string;
 }
 
-export const LoginForm: React.FC<Props> = ({ handleLogin }: Props) => {
+export const LoginForm: React.FC<Props> = ({ handleLogin, loading, errorMessage }: Props) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [validated, setValidated] = useState(false);
@@ -15,15 +18,15 @@ export const LoginForm: React.FC<Props> = ({ handleLogin }: Props) => {
       noValidate
       validated={validated}
       onSubmit={event => {
+        setValidated(false);
         if (!event.currentTarget.checkValidity()) {
           event.preventDefault();
           event.stopPropagation();
+          setValidated(true);
         } else {
           handleLogin(username, password);
           event.preventDefault();
         }
-
-        setValidated(true);
       }}
     >
       <Form.Group controlId="formBasicUsername">
@@ -48,9 +51,14 @@ export const LoginForm: React.FC<Props> = ({ handleLogin }: Props) => {
         />
         <Form.Control.Feedback type="invalid">Please provide a password</Form.Control.Feedback>
       </Form.Group>
-      <Button variant="primary" type="submit">
+      {errorMessage && !loading && <ErrorMessage>{errorMessage}</ErrorMessage>}
+      <Button variant="primary" type="submit" disabled={loading}>
         Login
       </Button>
     </Form>
   );
 };
+
+const ErrorMessage = styled.p`
+  color: red;
+`;
