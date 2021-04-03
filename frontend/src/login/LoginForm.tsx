@@ -1,4 +1,4 @@
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Spinner } from 'react-bootstrap';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -29,6 +29,13 @@ export const LoginForm: React.FC<Props> = ({ handleLogin, loading, errorMessage 
         }
       }}
     >
+      {loading && (
+        <CenteredSpinner>
+          <Spinner animation="border" role="status">
+            <span className="sr-only">Loading...</span>
+          </Spinner>
+        </CenteredSpinner>
+      )}
       <Form.Group controlId="formBasicUsername">
         <Form.Label>Username</Form.Label>
         <Form.Control
@@ -61,4 +68,12 @@ export const LoginForm: React.FC<Props> = ({ handleLogin, loading, errorMessage 
 
 const ErrorMessage = styled.p`
   color: red;
+`;
+
+const CenteredSpinner = styled.div`
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  opacity: 0.5;
+  transform: translate(-50%, -50%);
 `;
