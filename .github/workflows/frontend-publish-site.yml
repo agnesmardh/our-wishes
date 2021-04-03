@@ -7,7 +7,7 @@ on:
 jobs:
   build:
 
-    environment: gh-pages
+    environment: github-pages
     runs-on: ubuntu-latest
     defaults:
       run:
