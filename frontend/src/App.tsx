@@ -1,32 +1,11 @@
-import React, { ReactElement, useEffect, useState } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import axios from 'axios';
+import React from 'react';
+import { LoginContainer } from './login/LoginContainer';
+import { Amplify } from 'aws-amplify';
 
-export const App = (): ReactElement => {
-  const [data, setData] = useState();
+Amplify.configure({
+  aws_cognito_region: process.env.REACT_APP_COGNITO_REGION,
+  aws_user_pools_id: process.env.REACT_APP_COGNITO_USER_POOL_ID,
+  aws_user_pools_web_client_id: process.env.REACT_APP_COGNITO_APP_CLIENT_ID
+});
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios('https://hn.algolia.com/api/v1/search?query=redux');
-
-      setData(result.data);
-    };
-
-    fetchData();
-  }, []);
-
-  console.log(data);
-
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello and welcome to our wishes!</p>
-        <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-};
+export const App: React.FC = () => <LoginContainer />;
