@@ -43,7 +43,14 @@
         "statements": 0
       }
     },
-    "coverageReporters": ["cobertura", "json", "lcov", "text", "text-summary", "html"]
+    "coverageReporters": [
+      "cobertura",
+      "json",
+      "lcov",
+      "text",
+      "text-summary",
+      "html"
+    ]
   },
   "browserslist": {
     "production": [
