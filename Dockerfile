@@ -3,8 +3,16 @@ WORKDIR /backend
 
 EXPOSE 5001
 
+
+RUN ls -la
+RUN pwd
+
 # Copy csproj and restore as distinct layers
 COPY *.csproj ./
+
+RUN ls -la
+RUN pwd
+
 RUN dotnet restore
 
 # Copy everything else and build
