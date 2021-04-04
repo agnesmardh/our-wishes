@@ -1,5 +1,5 @@
 FROM mcr.microsoft.com/dotnet/core/sdk AS build-env
-WORKDIR /app
+WORKDIR /backend
 
 EXPOSE 5001
 
