@@ -12,18 +12,11 @@ namespace backend.Controllers
     [Route("[controller]")]
     public class WishController : ControllerBase
     {
-        private static readonly int ListId = 1;
+        private readonly WishlistContext _context;
 
-        private static List<Wish> Wishes = new List<Wish>
+        public WishController(WishlistContext context)
         {
-            new Wish{Id = 5, Title =  "Gameboy", Bought = false, ListId = ListId }, new Wish{Id = 7, Title =  "Bok", Bought = false, ListId = ListId }, new Wish{Id = 24, Title =  "Marmeladgodis", Bought = false, ListId = ListId }
-        };
-
-        private readonly ILogger<WishController> _logger;
-
-        public WishController(ILogger<WishController> logger)
-        {
-            _logger = logger;
+            _context = context;
         }
 
         private static WishDTO ItemToDTO(Wish wish) =>
@@ -34,28 +27,15 @@ namespace backend.Controllers
             Bought = wish.Bought
         };
 
-        /*[HttpGet("{id}")]
-        public ActionResult<IEnumerable<WishDTO>> GetWishes(int id)
-        {
-            if (id != ListId)
-            {
-                return NotFound();
-            }
-            var result = Wishes.Where(w => w.ListId == id).Select(w => ItemToDTO(w));
-
-            return result.ToArray();
-        }*/
 
         [HttpPut("{id}")]
-        public ActionResult<WishDTO> AddWish(int id, string title)
+        public async Task<IActionResult> AddWish(int id, string title)
         {
-            if (id != ListId)
-            {
-                return BadRequest();
-            }
             var rng = new Random();
             Wish wishToAdd = new Wish { Title = title, Id = rng.Next(), Bought = false, ListId = id };
-            Wishes.Add(wishToAdd);
+            _context.Wishes.Add(wishToAdd);
+
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -63,7 +43,7 @@ namespace backend.Controllers
         [HttpGet("{id}")]
         public ActionResult<WishDTO> GetWish(int id)
         {
-            var wish = Wishes.First((w) => w.Id == id);
+            var wish = _context.Wishes.First((w) => w.Id == id);
 
             if (wish == null)
             {
@@ -74,15 +54,17 @@ namespace backend.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteWish(int id)
+        public async Task<IActionResult> DeleteWish(int id)
         {
-            var wish = Wishes.First((w) => w.Id == id);
+            var wish = await _context.Wishes.FindAsync(id);
+
             if (wish == null)
             {
                 return NotFound();
             }
 
-            Wishes.Remove(wish);
+            _context.Wishes.Remove(wish);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }

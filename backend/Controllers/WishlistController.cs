@@ -21,28 +21,34 @@ namespace backend.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Wishlist>> GetWishlist(int id)
+        public async Task<ActionResult<WishlistDTO>> GetWishlist(int id)
         {
+            Console.WriteLine("Hej this is the message");
             var wishlist = await _context.Wishlists.FindAsync(id);
-
+            Console.WriteLine("Hej message");
+            Console.WriteLine(wishlist.Wishes);
+        
+            
             if (wishlist == null)
             {
                 return NotFound();
             }
 
-            return wishlist;
+            return WishlistToDTO(wishlist);
         }
 
         [HttpPost]
-        public async Task<ActionResult<WishlistDTO>> CreateWishlist(string title)
+        public async Task<ActionResult<WishlistDTO>> CreateWishlist([FromBody] CreateWishlistDTO createWishlist)
         {
             var rng = new Random();
+            var ListID = rng.Next();
             var wishlist = new Wishlist
             {
-                Title = title,
+                Title = createWishlist.Title,
                 Owner = "Agnes",
-                Id = rng.Next()
-            };
+                Id = ListID,
+                Wishes = new List<Wish>() { new Wish { Id = rng.Next(), Title = "TestWish", Bought = false, ListId = ListID } }
+        };
 
             _context.Wishlists.Add(wishlist);
             await _context.SaveChangesAsync();
@@ -78,16 +84,21 @@ namespace backend.Controllers
                 .ToListAsync();
         }*/
 
-        private bool WishlistExists(int id) =>
-            _context.Wishlists.Any(e => e.Id == id);
-
-        private static WishlistDTO WishlistToDTO(Wishlist wishlist) =>
-        new WishlistDTO
+        private bool WishlistExists(int id)
         {
-            Id = wishlist.Id,
-            Title = wishlist.Title,
-            Owner = wishlist.Owner
-        };
+            return _context.Wishlists.Any(e => e.Id == id);
+        }
+
+        private static WishlistDTO WishlistToDTO(Wishlist wishlist)
+        {
+            return new WishlistDTO
+            {
+                Id = wishlist.Id,
+                Title = wishlist.Title,
+                Owner = wishlist.Owner,
+                Wishes = wishlist.Wishes?.Select(wish => WishToDTO(wish)).ToList()
+            };
+        }
 
         private static WishDTO WishToDTO(Wish wish) =>
         new WishDTO
