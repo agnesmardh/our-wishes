@@ -1,5 +1,5 @@
 FROM mcr.microsoft.com/dotnet/core/sdk AS build-env
-WORKDIR /backend
+WORKDIR /app
 
 EXPOSE 5001
 
@@ -8,7 +8,7 @@ RUN ls -la
 RUN pwd
 
 # Copy csproj and restore as distinct layers
-COPY *.csproj ./
+COPY backend/*.csproj ./
 
 RUN ls -la
 RUN pwd
