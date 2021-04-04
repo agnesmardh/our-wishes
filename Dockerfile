@@ -3,15 +3,8 @@ WORKDIR /app
 
 EXPOSE 5001
 
-
-RUN ls -la
-RUN pwd
-
 # Copy csproj and restore as distinct layers
 COPY backend/*.csproj ./
-
-RUN ls -la
-RUN pwd
 
 RUN dotnet restore
 
@@ -25,4 +18,3 @@ FROM mcr.microsoft.com/dotnet/aspnet:5.0
 WORKDIR /app
 COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "backend.dll"]
-#ENTRYPOINT ["bash"]
