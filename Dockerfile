@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
 WORKDIR /app
 
 EXPOSE 5001
@@ -16,11 +16,13 @@ RUN pwd
 RUN dotnet restore
 
 # Copy everything else and build
-COPY . ./
+COPY ./backend/ ./
+
 RUN dotnet publish -c Release -o out
 
-FROM mcr.microsoft.com/dotnet/core/aspnet
+FROM mcr.microsoft.com/dotnet/aspnet:5.0
 
 WORKDIR /app
 COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "backend.dll"]
+#ENTRYPOINT ["bash"]
