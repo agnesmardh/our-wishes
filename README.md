@@ -4,6 +4,8 @@
 This repository contains the code for the site Our Wishes. It contains both the backend and the frontend code.
 
 ## Backend
+[![Verify and Test](https://github.com/agnesmardh/our-wishes/actions/workflows/backend-test-and-verify.yml/badge.svg)](https://github.com/agnesmardh/our-wishes/actions/workflows/backend-test-and-verify.yml)
+
 The backend is written in C# and can be found in `./backend`
 
 ## Frontend
