@@ -65,7 +65,7 @@ namespace backend
             //var context = app.ApplicationServices.GetService<WishlistContext>();
             //WishlistContext.AddTestData(context);
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
