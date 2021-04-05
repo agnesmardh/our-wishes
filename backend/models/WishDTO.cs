@@ -1,5 +1,5 @@
 ﻿using System;
-namespace backend
+namespace backend.models
 {
     public class WishDTO
     {
