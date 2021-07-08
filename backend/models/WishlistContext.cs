@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 namespace backend.models
 {
@@ -14,13 +13,27 @@ namespace backend.models
 
         public DbSet<Wish> Wishes { get; set; }
 
+        private static void AddWishlistToWishes(WishlistContext context)
+        {
+            foreach (var wish in context.Wishes)
+            {
+                foreach (var wishlist in context.Wishlists)
+                {
+                    if (wish.WishlistId == wishlist.Id)
+                    {
+                        wish.Wishlist = wishlist;
+                    }
+                }
+            }
+        }
+
         public static void AddTestData(WishlistContext context)
         {
             var wish1 = new Wish
             {
                 Id = 1,
                 Title = "Bok",
-                ListId = 1,
+                WishlistId = 1,
                 Bought = false
 
             };
@@ -31,7 +44,7 @@ namespace backend.models
             {
                 Id = 2,
                 Title = "Choklad",
-                ListId = 1,
+                WishlistId = 1,
                 Bought = false
 
             };
@@ -42,7 +55,7 @@ namespace backend.models
             {
                 Id = 3,
                 Title = "Marmeladgodis",
-                ListId = 2,
+                WishlistId = 2,
                 Bought = false
 
             };
@@ -53,7 +66,7 @@ namespace backend.models
             {
                 Id = 4,
                 Title = "Visp",
-                ListId = 2,
+                WishlistId = 2,
                 Bought = false
 
             };
@@ -91,6 +104,7 @@ namespace backend.models
             };
 
             context.Wishlists.Add(wishlist2);
+            AddWishlistToWishes(context);
 
             context.SaveChanges();
         }

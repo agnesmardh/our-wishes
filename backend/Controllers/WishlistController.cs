@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using backend.models;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,12 +22,8 @@ namespace backend.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<WishlistDTO>> GetWishlist(int id)
         {
-            Console.WriteLine("Hej this is the message");
-            var wishlist = await _context.Wishlists.FindAsync(id);
-            Console.WriteLine("Hej message");
-            Console.WriteLine(wishlist.Wishes);
-        
-            
+            var wishlist = await _context.Wishlists.Include(x => x.Wishes).SingleOrDefaultAsync(x => x.Id == id);
+            //TODO check why this cant be null
             if (wishlist == null)
             {
                 return NotFound();
@@ -47,7 +42,7 @@ namespace backend.Controllers
                 Title = createWishlist.Title,
                 Owner = "Agnes",
                 Id = ListID,
-                Wishes = new List<Wish>() { new Wish { Id = rng.Next(), Title = "TestWish", Bought = false, ListId = ListID } }
+                Wishes = new List<Wish>() { new Wish { Id = rng.Next(), Title = "TestWish", Bought = false, WishlistId = ListID } }
         };
 
             _context.Wishlists.Add(wishlist);
