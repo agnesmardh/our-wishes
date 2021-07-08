@@ -1,46 +1,11 @@
 import React, { useState } from 'react';
-import { WishlistDTO } from './types/WishlistDTO';
 import { Wishlists } from './components/Wishlists';
 import { Col, Row } from 'react-bootstrap';
 import { Wish } from './components/Wish';
 import { useWishlists } from '../hooks/UseWishlists';
 
-const wishlistsMock: WishlistDTO[] = [
-  {
-    id: '1',
-    title: 'Önskelista 1',
-    owner: 'Mattias',
-    wishes: [
-      {
-        id: '1',
-        text: 'Gameboy Color'
-      },
-      {
-        id: '2',
-        text: 'En ros'
-      }
-    ]
-  },
-  {
-    id: '2',
-    title: 'Önskelista 2',
-    owner: 'Agnes',
-    wishes: [
-      {
-        id: '3',
-        text: 'Choklad'
-      },
-      {
-        id: '4',
-        text: 'Ett bibliotek'
-      }
-    ]
-  }
-];
-
 export const WishlistsContainer: React.FC = () => {
   const wishlists = useWishlists();
-  console.log(wishlists);
   const [activeWishlist, setActiveWishlist] = useState(!wishlists ? undefined : wishlists[0].id);
 
   if (!wishlists) {
@@ -57,10 +22,10 @@ export const WishlistsContainer: React.FC = () => {
         <Wishlists wishlists={wishlists} activeWishlist={activeWishlist} setActiveWishlist={setActiveWishlist} />
       </Col>
       <Col>
-        Lista av önskninar
+        List of Wishes
         {wishes}
       </Col>
-      <Col>Managering</Col>
+      <Col>Management of Wishlists</Col>
     </Row>
   );
 };
