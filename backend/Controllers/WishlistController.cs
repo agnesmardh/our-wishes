@@ -31,6 +31,16 @@ namespace backend.Controllers
 
             return WishlistToDTO(wishlist);
         }
+        
+        [HttpGet]
+        public IEnumerable<WishlistDTO> GetWishlists()
+        {
+            var wishlists = _context.Wishlists.Include(x => x.Wishes);
+
+            var wishlistsDto = wishlists.ToList().Select(WishlistToDTO);
+
+            return wishlistsDto;
+        }
 
         [HttpPost]
         public async Task<ActionResult<WishlistDTO>> CreateWishlist([FromBody] CreateWishlistDTO createWishlist)
@@ -69,15 +79,6 @@ namespace backend.Controllers
 
             return NoContent();
         }
-
-        // get all wishes for wishlist
-        /*[HttpGet]
-        public async Task<ActionResult<IEnumerable<WishDTO>>> GetWishes(int id)
-        {
-            return await _context.Wishes.Where(w => w.ListId == id)
-                .Select(x => WishToDTO(x))
-                .ToListAsync();
-        }*/
 
         private bool WishlistExists(int id)
         {
