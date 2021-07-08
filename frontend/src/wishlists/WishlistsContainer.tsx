@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { WishlistDTO } from './types/WishlistDTO';
 import { Wishlists } from './components/Wishlists';
 import { Col, Row } from 'react-bootstrap';
 import { Wish } from './components/Wish';
+import { useWishlists } from '../hooks/UseWishlists';
 
 const wishlistsMock: WishlistDTO[] = [
   {
@@ -38,16 +39,9 @@ const wishlistsMock: WishlistDTO[] = [
 ];
 
 export const WishlistsContainer: React.FC = () => {
-  const [wishlists, setWishLists] = useState<WishlistDTO[]>();
+  const wishlists = useWishlists();
+  console.log(wishlists);
   const [activeWishlist, setActiveWishlist] = useState(!wishlists ? undefined : wishlists[0].id);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setWishLists(wishlistsMock);
-    };
-
-    fetchData();
-  }, []);
 
   if (!wishlists) {
     return <div>Loading...</div>;
