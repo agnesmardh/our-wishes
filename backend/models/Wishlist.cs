@@ -10,8 +10,12 @@ namespace backend.models
 
         public string Owner { get; set; }
         public ICollection<Wish> Wishes { get; set; }
+        
+        public User User { get; set; }
+        
+        public int UserId { get; set; }
 
-        // Invited users?
+        //public ICollection<User> Users { get; set; } shared with
 
         public override string ToString()
         {

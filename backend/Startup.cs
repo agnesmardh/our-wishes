@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using backend.models;
+using Microsoft.IdentityModel.Tokens;
 
 
 namespace backend
@@ -48,6 +51,39 @@ namespace backend
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "backend", Version = "v1" });
             });
+            
+            services.AddAuthentication()
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = GetCognitoTokenValidationParams();
+                });
+        }
+        
+        private TokenValidationParameters GetCognitoTokenValidationParams()
+        {
+            var cognitoIssuer = $"https://cognito-idp.{Configuration["region"]}.amazonaws.com/{Configuration["userPoolId"]}";
+            var jwtKeySetUrl = $"{cognitoIssuer}/.well-known/jwks.json";
+            var cognitoAudience = Configuration["appClientId"];
+
+            return new TokenValidationParameters
+            {
+                IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) =>
+                {
+                    // get JsonWebKeySet from AWS
+                    var json = new WebClient().DownloadString(jwtKeySetUrl);
+            
+                    // serialize the result
+                    var keys = JsonSerializer.Deserialize<JsonWebKeySet>(json).Keys;
+            
+                    // cast the result to be the type expected by IssuerSigningKeyResolver
+                    return (IEnumerable<SecurityKey>)keys;
+                },
+                ValidIssuer = cognitoIssuer,
+                ValidateIssuerSigningKey = true,
+                ValidateIssuer = true,
+                ValidateLifetime = true,
+                ValidAudience = cognitoAudience
+            };
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,6 +99,8 @@ namespace backend
             app.UseRouting();
             app.UseCors();
             app.UseAuthorization();
+
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

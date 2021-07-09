@@ -4,12 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using backend.models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class WishlistController : ControllerBase
     {
         private readonly WishlistContext _context;
@@ -93,6 +95,16 @@ namespace backend.Controllers
                 Title = wishlist.Title,
                 Owner = wishlist.Owner,
                 Wishes = wishlist.Wishes?.Select(wish => WishToDTO(wish)).ToList()
+            };
+        }
+
+        private static UserDTO UserToDTO(User user)
+        {
+            return new UserDTO
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Wishlists = user.Wishlists?.Select(wishlist => WishlistToDTO(wishlist)).ToList()
             };
         }
 

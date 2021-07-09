@@ -12,6 +12,8 @@ namespace backend.models
         public DbSet<Wishlist> Wishlists { get; set; }
 
         public DbSet<Wish> Wishes { get; set; }
+        
+        public DbSet<User> Users { get; set; }
 
         private static void AddWishlistToWishes(WishlistContext context)
         {
@@ -29,6 +31,19 @@ namespace backend.models
 
         public static void AddTestData(WishlistContext context)
         {
+
+            var user1 = new User
+            {
+                Id = 1,
+                Username = "Agnes"
+            };
+            
+            var user2 = new User
+            {
+                Id = 2,
+                Username = "Kerp"
+            };
+            
             var wish1 = new Wish
             {
                 Id = 1,
@@ -83,7 +98,9 @@ namespace backend.models
                 Id = 1,
                 Title = "Examenspresent",
                 Owner = "Agnes",
-                Wishes = wishes1
+                Wishes = wishes1,
+                User = user1,
+                UserId = user1.Id
 
             };
 
@@ -100,8 +117,15 @@ namespace backend.models
                 Id = 2,
                 Title = "Jul 2021",
                 Owner = "Mattias",
-                Wishes = wishes2
+                Wishes = wishes2,
+                User = user2,
+                UserId = user2.Id
             };
+
+            // Set wishlists to users
+            user1.Wishlists = new List<Wishlist> {wishlist1};
+            user2.Wishlists = new List<Wishlist> {wishlist2};
+            
 
             context.Wishlists.Add(wishlist2);
             AddWishlistToWishes(context);
