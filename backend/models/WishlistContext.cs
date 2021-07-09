@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 namespace backend.models
 {
@@ -7,6 +8,11 @@ namespace backend.models
         public WishlistContext(DbContextOptions<WishlistContext> options)
             : base(options)
         {
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.EnableSensitiveDataLogging();
         }
 
         public DbSet<Wishlist> Wishlists { get; set; }
@@ -21,7 +27,7 @@ namespace backend.models
             {
                 foreach (var wishlist in context.Wishlists)
                 {
-                    if (wish.WishlistId == wishlist.Id)
+                    if (wish.WishlistId == wishlist.WishlistId)
                     {
                         wish.Wishlist = wishlist;
                     }
@@ -34,22 +40,31 @@ namespace backend.models
 
             var user1 = new User
             {
-                Id = 1,
-                Username = "Agnes"
+                UserId = "1",
+                Username = "Agnes",
+                Email = "email",
+                FirstName = "Agnes",
+                LastName = "Mårdh",
+                ProfileImageUrl = ""
             };
             
             var user2 = new User
             {
-                Id = 2,
-                Username = "Kerp"
+                UserId = "68b96e05-e6e0-4a66-b33b-28c1b189f3e8",
+                Username = "Kerp",
+                Email = "email",
+                FirstName = "Mattias",
+                LastName = "Nilsen",
+                ProfileImageUrl = ""
             };
             
             var wish1 = new Wish
             {
-                Id = 1,
+                WishId = 1,
                 Title = "Bok",
                 WishlistId = 1,
-                Bought = false
+                BoughtBy = null,
+                Link = ""
 
             };
 
@@ -57,10 +72,12 @@ namespace backend.models
 
             var wish2 = new Wish
             {
-                Id = 2,
+                WishId = 2,
                 Title = "Choklad",
                 WishlistId = 1,
-                Bought = false
+                BoughtBy = null,
+                Link = "",
+
 
             };
 
@@ -68,10 +85,11 @@ namespace backend.models
 
             var wish3 = new Wish
             {
-                Id = 3,
+                WishId = 3,
                 Title = "Marmeladgodis",
                 WishlistId = 2,
-                Bought = false
+                BoughtBy = null,
+                Link = ""
 
             };
 
@@ -79,10 +97,11 @@ namespace backend.models
 
             var wish4 = new Wish
             {
-                Id = 4,
+                WishId = 4,
                 Title = "Visp",
                 WishlistId = 2,
-                Bought = false
+                BoughtBy = null,
+                Link = ""
 
             };
 
@@ -95,12 +114,14 @@ namespace backend.models
             };
             var wishlist1 = new Wishlist
             {
-                Id = 1,
+                WishlistId = 1,
                 Title = "Examenspresent",
-                Owner = "Agnes",
                 Wishes = wishes1,
-                User = user1,
-                UserId = user1.Id
+                Owner = user1,
+                OwnerId = user1.UserId,
+                Archived = false,
+                Deadline = new DateTime(2021, 12, 24),
+                ShareableLink = ""
 
             };
 
@@ -114,12 +135,14 @@ namespace backend.models
 
             var wishlist2 = new Wishlist
             {
-                Id = 2,
+                WishlistId = 2,
                 Title = "Jul 2021",
-                Owner = "Mattias",
                 Wishes = wishes2,
-                User = user2,
-                UserId = user2.Id
+                Owner = user2,
+                OwnerId = user2.UserId,
+                Archived = false,
+                Deadline = new DateTime(2021, 12, 24),
+                ShareableLink = ""
             };
 
             // Set wishlists to users
