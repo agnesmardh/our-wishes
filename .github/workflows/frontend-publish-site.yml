@@ -33,13 +33,14 @@ jobs:
           REACT_APP_COGNITO_USER_POOL_ID: ${{ secrets.REACT_APP_COGNITO_USER_POOL_ID }}
           REACT_APP_COGNITO_APP_CLIENT_ID: ${{ secrets.REACT_APP_COGNITO_APP_CLIENT_ID }}
       - name: Deploy to S3
-          uses: reggionick/s3-deploy@v3
-          with:
-            folder: ./frontend/build
-            bucket: ${{ secrets.S3_BUCKET }}
-            bucket-region: ${{ secrets.S3_BUCKET_REGION }}
-            dist-id: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
-            invalidation: /
-            delete-removed: true
-            no-cache: true
-            private: true
+        if: success()
+        uses: reggionick/s3-deploy@v3
+        with:
+          folder: ./frontend/build
+          bucket: ${{ secrets.S3_BUCKET }}
+          bucket-region: ${{ secrets.S3_BUCKET_REGION }}
+          dist-id: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+          invalidation: /
+          delete-removed: true
+          no-cache: true
+          private: true
