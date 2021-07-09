@@ -11,6 +11,10 @@ namespace backend.models
         public ICollection<WishDTO> Wishes { get; set; }
 
         // Invited users?
+        public override string ToString()
+        {
+            return $"{nameof(Id)}: {Id}, {nameof(Title)}: {Title}, {nameof(Owner)}: {Owner}, {nameof(Wishes)}: {Wishes}";
+        }
     }
 
     public class CreateWishlistDTO
