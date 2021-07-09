@@ -1,17 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text.Json;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using backend.models;
@@ -69,20 +61,15 @@ namespace backend
             {
                 IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) =>
                 {
-                    // get JsonWebKeySet from AWS
                     var json = new WebClient().DownloadString(jwtKeySetUrl);
-            
-                    // serialize the result
-                    var keys = JsonSerializer.Deserialize<JsonWebKeySet>(json).Keys;
-            
-                    // cast the result to be the type expected by IssuerSigningKeyResolver
-                    return (IEnumerable<SecurityKey>)keys;
+                    return new JsonWebKeySet(json).GetSigningKeys();
                 },
                 ValidIssuer = cognitoIssuer,
                 ValidateIssuerSigningKey = true,
                 ValidateIssuer = true,
                 ValidateLifetime = true,
-                ValidAudience = cognitoAudience
+                ValidateAudience = false
+                // ValidAudience = cognitoAudience
             };
         }
 
@@ -99,7 +86,6 @@ namespace backend
             app.UseRouting();
             app.UseCors();
             app.UseAuthorization();
-
             app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
