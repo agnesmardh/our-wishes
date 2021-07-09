@@ -6,5 +6,5 @@ interface Props {
 }
 
 export const Wish: React.FC<Props> = ({ wish }: Props) => {
-  return <div>Wish: {wish.text}</div>;
+  return <div>Wish: {wish.title}</div>;
 };
