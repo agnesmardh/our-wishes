@@ -15,7 +15,6 @@ namespace backend.models
 
         // public ICollection<UserDto> UsersSharedWith { get; set; }
 
-
         public ICollection<WishDto> Wishes { get; set; }
 
         public bool Archived { get; set; }
@@ -28,7 +27,7 @@ namespace backend.models
             {
                 Id = wishlist.WishlistId,
                 Title = wishlist.Title,
-                Owner = UserDto.ToDto(wishlist.Owner),
+                Owner = new UserDto(),
                 Wishes = wishlist.Wishes?.Select(WishDto.ToDto).ToList()
             };
         }

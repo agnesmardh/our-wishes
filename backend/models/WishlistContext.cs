@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 namespace backend.models
 {
@@ -20,6 +21,16 @@ namespace backend.models
         public DbSet<Wish> Wishes { get; set; }
         
         public DbSet<User> Users { get; set; }
+
+        public IEnumerable<Wishlist> GetWishlistsByOwnerId(string ownerId)
+        {
+            return  Users.Where((user) => user.UserId == ownerId)
+                .Include(x => x.Wishlists)
+                .ThenInclude(x => x.Wishes)
+                .ThenInclude(x => x.BoughtBy)
+                .First().Wishlists;
+
+        }
 
         private static void AddWishlistToWishes(WishlistContext context)
         {

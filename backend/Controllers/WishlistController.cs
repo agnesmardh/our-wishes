@@ -39,8 +39,8 @@ namespace backend.Controllers
         [HttpGet]
         public IEnumerable<WishlistDto> GetWishlists()
         {
-            var wishlists = _context.Wishlists.Include(x => x.Wishes);
-
+            var userId = GetUserId();
+            var wishlists = _context.GetWishlistsByOwnerId(userId);
             var wishlistsDto = wishlists.ToList().Select(WishlistDto.ToDto);
 
             return wishlistsDto;

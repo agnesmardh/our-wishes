@@ -15,6 +15,10 @@ namespace backend.models
         public ICollection<WishlistDto> Wishlists { get; set; }
         public static UserDto ToDto(User user)
         {
+            if (user == null)
+            {
+                return null;
+            }
             return new UserDto
             {
                 Id = user.UserId,

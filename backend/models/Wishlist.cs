@@ -17,8 +17,6 @@ namespace backend.models
         // [ForeignKey("UserId")]
         // public ICollection<User> UsersSharedWith { get; set; }
 
-
-        [ForeignKey("WishId")]
         public ICollection<Wish> Wishes { get; set; }
 
         public bool Archived { get; set; }
