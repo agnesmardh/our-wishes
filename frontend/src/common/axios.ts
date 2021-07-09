@@ -2,7 +2,7 @@ import defaultAxios, { AxiosRequestConfig } from 'axios';
 import { Auth } from 'aws-amplify';
 
 const axios = defaultAxios.create({
-  baseURL: `https://localhost:5001`
+  baseURL: process.env.REACT_APP_BACKEND_URL
 });
 
 const requestHandler = async (request: AxiosRequestConfig) => {

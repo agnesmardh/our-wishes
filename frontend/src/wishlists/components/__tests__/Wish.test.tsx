@@ -10,7 +10,8 @@ describe('<Wish/>', () => {
   it('should render a wish', () => {
     renderWish({
       id: '1',
-      text: 'wishText'
+      title: 'wishText',
+      bought: false
     });
 
     const wishElement = screen.getByText(/Wish: wishText/i);

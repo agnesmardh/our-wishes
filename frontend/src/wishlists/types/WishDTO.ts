@@ -1,4 +1,5 @@
 export interface WishDTO {
   id: string;
-  text: string;
+  title: string;
+  bought: boolean;
 }
