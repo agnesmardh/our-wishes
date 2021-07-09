@@ -55,20 +55,13 @@ namespace backend
         {
             if (env.IsDevelopment())
             {
-                app.UseCors();
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "backend v1"));
             }
 
-
-            //var context = app.ApplicationServices.GetService<WishlistContext>();
-            //WishlistContext.AddTestData(context);
-
-            //app.UseHttpsRedirection();
-
             app.UseRouting();
-
+            app.UseCors();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
