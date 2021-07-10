@@ -60,12 +60,7 @@ namespace backend.Controllers
                 WishlistId = listId,
                 Wishes = new List<Wish>()
                 {
-                    new Wish
-                    {
-                        WishId = rng.Next(),
-                        Title = "TestWish",
-                        BoughtBy = null,
-                    }
+                    new Wish(rng.Next(), "Testwish", null, "")
                 },
                 Archived = false,
                 Deadline = new DateTime(2021, 12, 24),

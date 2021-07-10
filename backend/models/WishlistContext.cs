@@ -56,43 +56,19 @@ namespace backend.models
 
             context.Users.Add(user2);
             
-            var wish1 = new Wish
-            {
-                WishId = 1,
-                Title = "Bok",
-                BoughtBy = null,
-                Link = ""
-            };
+            var wish1 = new Wish(1, "Bok", null, "");
 
             context.Wishes.Add(wish1);
 
-            var wish2 = new Wish
-            {
-                WishId = 2,
-                Title = "Choklad",
-                BoughtBy = null,
-                Link = "",
-            };
+            var wish2 = new Wish(2, "Choklad", null, "");
 
             context.Wishes.Add(wish2);
 
-            var wish3 = new Wish
-            {
-                WishId = 3,
-                Title = "Marmeladgodis",
-                BoughtBy = null,
-                Link = ""
-            };
+            var wish3 = new Wish(3, "Marmeladgodis", null, "");
 
             context.Wishes.Add(wish3);
 
-            var wish4 = new Wish
-            {
-                WishId = 4,
-                Title = "Visp",
-                BoughtBy = null,
-                Link = ""
-            };
+            var wish4 = new Wish(4, "Visp", null, "");
 
             context.Wishes.Add(wish4);
 
