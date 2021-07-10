@@ -27,7 +27,7 @@ namespace backend.Controllers
         public async Task<ActionResult<WishlistDto>> GetWishlist(int id)
         {
             var wishlist = await _context.Wishlists.Include(x => x.Wishes).SingleOrDefaultAsync(x => x.WishlistId == id);
-            //TODO check why this cant be null
+
             if (wishlist == null)
             {
                 return NotFound();
@@ -98,6 +98,11 @@ namespace backend.Controllers
         {
             var wishlist = await _context.Wishlists.FindAsync(id);
 
+            if (wishlist.Owner.UserId == GetUserId())
+            {
+                return Unauthorized();
+            }
+
             if (wishlist == null)
             {
                 return NotFound();
@@ -107,11 +112,6 @@ namespace backend.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool WishlistExists(int id)
-        {
-            return _context.Wishlists.Any(e => e.WishlistId == id);
         }
 
     }

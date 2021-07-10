@@ -5,11 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using backend.models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace backend.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class WishController : ControllerBase
     {
         private readonly WishlistContext _context;
@@ -23,7 +26,7 @@ namespace backend.Controllers
         public async Task<IActionResult> AddWish(int id, string title)
         {
             var rng = new Random();
-            Wish wishToAdd = new Wish { Title = title, WishId = rng.Next(), BoughtBy = null};
+            var wishToAdd = new Wish { Title = title, WishId = rng.Next(), BoughtBy = null};
             _context.Wishes.Add(wishToAdd);
 
             await _context.SaveChangesAsync();
