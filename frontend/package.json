@@ -28,7 +28,6 @@
     "deploy": "gh-pages -d build",
     "prepare": "cd .. && husky install frontend/.husky"
   },
-  "homepage": "/our-wishes",
   "eslintConfig": {
     "extends": [
       "react-app",
