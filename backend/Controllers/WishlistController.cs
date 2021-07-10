@@ -57,7 +57,6 @@ namespace backend.Controllers
             {
                 Title = createWishlist.Title,
                 Owner = user,
-                OwnerId = user.UserId,
                 WishlistId = listId,
                 Wishes = new List<Wish>()
                 {
@@ -66,7 +65,6 @@ namespace backend.Controllers
                         WishId = rng.Next(),
                         Title = "TestWish",
                         BoughtBy = null,
-                        WishlistId = listId
                     }
                 },
                 Archived = false,

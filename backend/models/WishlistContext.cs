@@ -24,31 +24,14 @@ namespace backend.models
 
         public IEnumerable<Wishlist> GetWishlistsByOwnerId(string ownerId)
         {
-            return  Users.Where((user) => user.UserId == ownerId)
-                .Include(x => x.Wishlists)
-                .ThenInclude(x => x.Wishes)
-                .ThenInclude(x => x.BoughtBy)
-                .First().Wishlists;
-
-        }
-
-        private static void AddWishlistToWishes(WishlistContext context)
-        {
-            foreach (var wish in context.Wishes)
-            {
-                foreach (var wishlist in context.Wishlists)
-                {
-                    if (wish.WishlistId == wishlist.WishlistId)
-                    {
-                        wish.Wishlist = wishlist;
-                    }
-                }
-            }
+            return Wishlists.Where(wishlist => wishlist.Owner.UserId == ownerId)
+                .Include(x => x.Owner)
+                .Include(x => x.Wishes)
+                .ThenInclude(x => x.BoughtBy);
         }
 
         public static void AddTestData(WishlistContext context)
         {
-
             var user1 = new User
             {
                 UserId = "1",
@@ -58,6 +41,8 @@ namespace backend.models
                 LastName = "Mårdh",
                 ProfileImageUrl = ""
             };
+
+            context.Users.Add(user1);
             
             var user2 = new User
             {
@@ -68,15 +53,15 @@ namespace backend.models
                 LastName = "Nilsen",
                 ProfileImageUrl = ""
             };
+
+            context.Users.Add(user2);
             
             var wish1 = new Wish
             {
                 WishId = 1,
                 Title = "Bok",
-                WishlistId = 1,
                 BoughtBy = null,
                 Link = ""
-
             };
 
             context.Wishes.Add(wish1);
@@ -85,11 +70,8 @@ namespace backend.models
             {
                 WishId = 2,
                 Title = "Choklad",
-                WishlistId = 1,
                 BoughtBy = null,
                 Link = "",
-
-
             };
 
             context.Wishes.Add(wish2);
@@ -98,10 +80,8 @@ namespace backend.models
             {
                 WishId = 3,
                 Title = "Marmeladgodis",
-                WishlistId = 2,
                 BoughtBy = null,
                 Link = ""
-
             };
 
             context.Wishes.Add(wish3);
@@ -110,10 +90,8 @@ namespace backend.models
             {
                 WishId = 4,
                 Title = "Visp",
-                WishlistId = 2,
                 BoughtBy = null,
                 Link = ""
-
             };
 
             context.Wishes.Add(wish4);
@@ -123,17 +101,16 @@ namespace backend.models
                 wish1,
                 wish2
             };
+
             var wishlist1 = new Wishlist
             {
                 WishlistId = 1,
                 Title = "Examenspresent",
                 Wishes = wishes1,
                 Owner = user1,
-                OwnerId = user1.UserId,
                 Archived = false,
                 Deadline = new DateTime(2021, 12, 24),
                 ShareableLink = ""
-
             };
 
             context.Wishlists.Add(wishlist1);
@@ -150,23 +127,13 @@ namespace backend.models
                 Title = "Jul 2021",
                 Wishes = wishes2,
                 Owner = user2,
-                OwnerId = user2.UserId,
                 Archived = false,
                 Deadline = new DateTime(2021, 12, 24),
                 ShareableLink = ""
             };
 
-            // Set wishlists to users
-            user1.Wishlists = new List<Wishlist> {wishlist1};
-            user2.Wishlists = new List<Wishlist> {wishlist2};
-            
-
             context.Wishlists.Add(wishlist2);
-            AddWishlistToWishes(context);
-
             context.SaveChanges();
         }
-
     }
-
 }

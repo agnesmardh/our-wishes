@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace backend.models
 {
     public class User
@@ -10,10 +8,5 @@ namespace backend.models
         public string LastName { get; set; }
         public string ProfileImageUrl { get; set; }
         public string Email { get; set; }
-        
-        public ICollection<Wishlist> Wishlists { get; set; }
-
-        // [ForeignKey("WishlistId")]
-        // public ICollection<Wishlist> WishlistSharedWithMe { get; set; }
     }
 }

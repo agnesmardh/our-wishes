@@ -23,7 +23,7 @@ namespace backend.Controllers
         public async Task<IActionResult> AddWish(int id, string title)
         {
             var rng = new Random();
-            Wish wishToAdd = new Wish { Title = title, WishId = rng.Next(), BoughtBy = null, WishlistId = id };
+            Wish wishToAdd = new Wish { Title = title, WishId = rng.Next(), BoughtBy = null};
             _context.Wishes.Add(wishToAdd);
 
             await _context.SaveChangesAsync();

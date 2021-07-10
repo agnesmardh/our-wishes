@@ -8,15 +8,8 @@ namespace backend.models
     {
         public int Id { get; set; }
         public string Title { get; set; }
-
-
-        public string OwnerId { get; set; }
         public UserDto Owner { get; set; }
-
-        // public ICollection<UserDto> UsersSharedWith { get; set; }
-
         public ICollection<WishDto> Wishes { get; set; }
-
         public bool Archived { get; set; }
         public DateTime Deadline { get; set; }
         public string ShareableLink { get; set; }
@@ -27,19 +20,18 @@ namespace backend.models
             {
                 Id = wishlist.WishlistId,
                 Title = wishlist.Title,
-                Owner = new UserDto(),
-                Wishes = wishlist.Wishes?.Select(WishDto.ToDto).ToList()
+                Owner = UserDto.ToDto(wishlist.Owner),
+                Wishes = wishlist.Wishes?.Select(WishDto.ToDto).ToList(),
+                Archived = wishlist.Archived,
+                Deadline = wishlist.Deadline,
+                ShareableLink = wishlist.ShareableLink
             };
-        }
-
-        public override string ToString()
-        {
-            return $"{nameof(Id)}: {Id}, {nameof(Title)}: {Title}, {nameof(OwnerId)}: {OwnerId}, {nameof(Owner)}: {Owner}, {nameof(Wishes)}: {Wishes}, {nameof(Archived)}: {Archived}, {nameof(Deadline)}: {Deadline}, {nameof(ShareableLink)}: {ShareableLink}";
         }
     }
 
     public class CreateWishlistDto
     {
         public string Title { get; set; }
+        public DateTime Deadline { get; set; }
     }
 }
