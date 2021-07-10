@@ -14,7 +14,7 @@ export const Wishlist: React.FC<Props> = ({ wishlist, active, onClick }: Props) 
     <ListGroup.Item role={'button'} active={active} onClick={onClick}>
       <Row>
         <Col>{wishlist.title}</Col>
-        <WishlistOwner>{wishlist.owner}</WishlistOwner>
+        <WishlistOwner>{wishlist.owner.firstName}</WishlistOwner>
       </Row>
     </ListGroup.Item>
   );
