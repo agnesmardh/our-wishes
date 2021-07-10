@@ -1,15 +1,23 @@
-﻿using System;
+﻿#nullable enable
 namespace backend.models
 {
-    public class WishDTO
+    public class WishDto
     {
+        public WishDto(int id, string title, UserDto? boughtBy = null, string link = "")
+        {
+            Id = id;
+            Title = title;
+            BoughtBy = boughtBy;
+            Link = link;
+        }
+
         public int Id { get; set; }
         public string Title { get; set; }
-        public bool Bought { get; set; }
-
-        public override string ToString()
+        public UserDto? BoughtBy { get; set; }
+        public string Link { get; set; }
+        public static WishDto ToDto(Wish wish)
         {
-            return $"{nameof(Id)}: {Id}, {nameof(Title)}: {Title}, {nameof(Bought)}: {Bought}";
+            return new(wish.WishId, wish.Title, wish.BoughtBy, wish.Link);
         }
     }
 }

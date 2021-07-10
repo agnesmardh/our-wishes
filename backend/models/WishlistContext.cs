@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 namespace backend.models
 {
@@ -9,67 +11,64 @@ namespace backend.models
         {
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.EnableSensitiveDataLogging();
+        }
+
         public DbSet<Wishlist> Wishlists { get; set; }
 
         public DbSet<Wish> Wishes { get; set; }
+        
+        public DbSet<User> Users { get; set; }
 
-        private static void AddWishlistToWishes(WishlistContext context)
+        public IEnumerable<Wishlist> GetWishlistsByOwnerId(string ownerId)
         {
-            foreach (var wish in context.Wishes)
-            {
-                foreach (var wishlist in context.Wishlists)
-                {
-                    if (wish.WishlistId == wishlist.Id)
-                    {
-                        wish.Wishlist = wishlist;
-                    }
-                }
-            }
+            return Wishlists.Where(wishlist => wishlist.Owner.UserId == ownerId)
+                .Include(x => x.Owner)
+                .Include(x => x.Wishes)
+                .ThenInclude(x => x.BoughtBy);
         }
 
         public static void AddTestData(WishlistContext context)
         {
-            var wish1 = new Wish
+            var user1 = new User
             {
-                Id = 1,
-                Title = "Bok",
-                WishlistId = 1,
-                Bought = false
-
+                UserId = "1",
+                Username = "Agnes",
+                Email = "email",
+                FirstName = "Agnes",
+                LastName = "Mårdh",
+                ProfileImageUrl = ""
             };
+
+            context.Users.Add(user1);
+            
+            var user2 = new User
+            {
+                UserId = "68b96e05-e6e0-4a66-b33b-28c1b189f3e8",
+                Username = "Kerp",
+                Email = "email",
+                FirstName = "Mattias",
+                LastName = "Nilsen",
+                ProfileImageUrl = ""
+            };
+
+            context.Users.Add(user2);
+            
+            var wish1 = new Wish(1, "Bok", null, "");
 
             context.Wishes.Add(wish1);
 
-            var wish2 = new Wish
-            {
-                Id = 2,
-                Title = "Choklad",
-                WishlistId = 1,
-                Bought = false
-
-            };
+            var wish2 = new Wish(2, "Choklad", null, "");
 
             context.Wishes.Add(wish2);
 
-            var wish3 = new Wish
-            {
-                Id = 3,
-                Title = "Marmeladgodis",
-                WishlistId = 2,
-                Bought = false
-
-            };
+            var wish3 = new Wish(3, "Marmeladgodis", null, "");
 
             context.Wishes.Add(wish3);
 
-            var wish4 = new Wish
-            {
-                Id = 4,
-                Title = "Visp",
-                WishlistId = 2,
-                Bought = false
-
-            };
+            var wish4 = new Wish(4, "Visp", null, "");
 
             context.Wishes.Add(wish4);
 
@@ -78,13 +77,16 @@ namespace backend.models
                 wish1,
                 wish2
             };
+
             var wishlist1 = new Wishlist
             {
-                Id = 1,
+                WishlistId = 1,
                 Title = "Examenspresent",
-                Owner = "Agnes",
-                Wishes = wishes1
-
+                Wishes = wishes1,
+                Owner = user1,
+                Archived = false,
+                Deadline = new DateTime(2021, 12, 24),
+                ShareableLink = ""
             };
 
             context.Wishlists.Add(wishlist1);
@@ -97,18 +99,17 @@ namespace backend.models
 
             var wishlist2 = new Wishlist
             {
-                Id = 2,
+                WishlistId = 2,
                 Title = "Jul 2021",
-                Owner = "Mattias",
-                Wishes = wishes2
+                Wishes = wishes2,
+                Owner = user2,
+                Archived = false,
+                Deadline = new DateTime(2021, 12, 24),
+                ShareableLink = ""
             };
 
             context.Wishlists.Add(wishlist2);
-            AddWishlistToWishes(context);
-
             context.SaveChanges();
         }
-
     }
-
 }
