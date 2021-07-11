@@ -1,35 +1,54 @@
 import React from 'react';
 import { WishlistDTO } from '../types/WishlistDTO';
 import { Wishlist } from './Wishlist';
-import { ListGroup } from 'react-bootstrap';
+import { Masonry, RenderComponentProps } from 'masonic';
+import { WishDTO } from '../types/WishDTO';
 
 interface Props {
   wishlists: WishlistDTO[];
-  activeWishlist: string | undefined;
-  setActiveWishlist: (value: string) => void;
 }
 
-const createWishlist = (
-  wishlist: WishlistDTO,
-  activeWishlist: string | undefined,
-  setActiveWishlist: (value: string) => void
-) => {
+const WishlistCard = ({ index, data, width }: RenderComponentProps<WishlistDTO>) => {
   return (
-    <Wishlist
-      key={wishlist.id}
-      wishlist={wishlist}
-      active={activeWishlist === wishlist.id}
-      onClick={() => setActiveWishlist(wishlist.id)}
-    />
+    <div style={{ width: width }}>
+      <Wishlist key={index} wishlist={data} />
+    </div>
   );
 };
 
-export const Wishlists: React.FC<Props> = ({ wishlists, activeWishlist, setActiveWishlist }: Props) => {
-  const wishlistTags = wishlists.map(wishlist => createWishlist(wishlist, activeWishlist, setActiveWishlist));
+const generateWish = (numberOfWishes: number): WishDTO[] => {
+  const wishesList: WishDTO[] = [];
+  for (let i = 0; i < numberOfWishes; i++) {
+    const wish: WishDTO = {
+      boughtBy: undefined,
+      id: `${i}`,
+      link: '',
+      title: `Title of wish ${i}`
+    };
+    wishesList.push(wish);
+  }
+  return wishesList;
+};
+
+export const Wishlists: React.FC<Props> = ({ wishlists }: Props) => {
+  for (let i = 0; i < 15; i++) {
+    wishlists.push({
+      archived: '',
+      deadline: '',
+      id: `${i}`,
+      owner: wishlists[0].owner,
+      shareableLink: '',
+      title: '',
+      wishes: generateWish(i + 4)
+    });
+  }
   return (
-    <ListGroup>
-      <div>Wishlists:</div>
-      {wishlistTags}
-    </ListGroup>
+    <Masonry
+      items={wishlists}
+      columnGutter={8}
+      columnWidth={500}
+      overscanBy={5}
+      render={({ index, data, width }) => WishlistCard({ index, data, width })}
+    />
   );
 };

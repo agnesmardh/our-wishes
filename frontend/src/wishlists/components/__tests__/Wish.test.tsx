@@ -16,7 +16,7 @@ describe('<Wish/>', () => {
       link: ''
     });
 
-    const wishElement = screen.getByText(/Wish: wishText/i);
+    const wishElement = screen.getByText(/wishText/i);
     expect(wishElement).toBeInTheDocument();
   });
 });
