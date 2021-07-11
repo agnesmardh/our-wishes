@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Wishlists } from './components/Wishlists';
 import { Col, Row } from 'react-bootstrap';
 import { useWishlists } from '../hooks/UseWishlists';
