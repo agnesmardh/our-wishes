@@ -23,15 +23,23 @@ export const LoginContainer: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   return (
-    <CenteredLoginContainer>
-      <LoginForm
-        handleLogin={(username, password) => handleLogin(username, password, setLoading, setErrorMessage)}
-        loading={loading}
-        errorMessage={errorMessage}
-      />
-    </CenteredLoginContainer>
+    <>
+      <CenteredHeader>Welcome to Our Wishes</CenteredHeader>
+      <CenteredLoginContainer>
+        <LoginForm
+          handleLogin={(username, password) => handleLogin(username, password, setLoading, setErrorMessage)}
+          loading={loading}
+          errorMessage={errorMessage}
+        />
+      </CenteredLoginContainer>
+    </>
   );
 };
+
+const CenteredHeader = styled.h1`
+  margin-top: 1vh;
+  text-align: center;
+`;
 
 const CenteredLoginContainer = styled.div`
   margin: auto;

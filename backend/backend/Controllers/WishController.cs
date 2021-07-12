@@ -5,11 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using backend.models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace backend.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class WishController : ControllerBase
     {
         private readonly WishlistContext _context;
@@ -19,20 +22,11 @@ namespace backend.Controllers
             _context = context;
         }
 
-        private static WishDTO ItemToDTO(Wish wish) =>
-        new WishDTO
-        {
-            Id = wish.Id,
-            Title = wish.Title,
-            Bought = wish.Bought
-        };
-
-
         [HttpPut("{id}")]
         public async Task<IActionResult> AddWish(int id, string title)
         {
             var rng = new Random();
-            Wish wishToAdd = new Wish { Title = title, Id = rng.Next(), Bought = false, WishlistId = id };
+            var wishToAdd = new Wish(rng.Next(), title, null, "");
             _context.Wishes.Add(wishToAdd);
 
             await _context.SaveChangesAsync();
@@ -41,16 +35,16 @@ namespace backend.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<WishDTO> GetWish(int id)
+        public ActionResult<WishDto> GetWish(int id)
         {
-            var wish = _context.Wishes.First((w) => w.Id == id);
+            var wish = _context.Wishes.First((w) => w.WishId == id);
 
             if (wish == null)
             {
                 return NotFound();
             }
 
-            return ItemToDTO(wish);
+            return WishDto.ToDto(wish);
         }
 
         [HttpDelete("{id}")]

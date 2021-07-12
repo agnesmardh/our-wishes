@@ -1,5 +1,8 @@
+import { UserDTO } from './UserDTO';
+
 export interface WishDTO {
   id: string;
   title: string;
-  bought: boolean;
+  boughtBy: UserDTO | undefined;
+  link: string;
 }
