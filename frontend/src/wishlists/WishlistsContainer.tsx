@@ -2,12 +2,18 @@ import React from 'react';
 import { Wishlists } from './components/Wishlists';
 import { Col, Row } from 'react-bootstrap';
 import { useWishlists } from '../hooks/UseWishlists';
+import { LoadingIndicator } from '../common/components/loading-indicator/LoadingIndicator';
+import styled from 'styled-components';
 
 export const WishlistsContainer: React.FC = () => {
   const wishlists = useWishlists();
 
   if (!wishlists) {
-    return <div>Loading...</div>;
+    return (
+      <LoadingContainer>
+        <LoadingIndicator />
+      </LoadingContainer>
+    );
   }
 
   return (
@@ -18,3 +24,10 @@ export const WishlistsContainer: React.FC = () => {
     </Row>
   );
 };
+
+const LoadingContainer = styled.div`
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

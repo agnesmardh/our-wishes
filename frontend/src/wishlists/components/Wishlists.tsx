@@ -38,7 +38,7 @@ export const Wishlists: React.FC<Props> = ({ wishlists }: Props) => {
       id: `${i}`,
       owner: wishlists[0].owner,
       shareableLink: '',
-      title: '',
+      title: `Wishlist #${i + 1}`,
       wishes: generateWish(i + 4)
     });
   }
