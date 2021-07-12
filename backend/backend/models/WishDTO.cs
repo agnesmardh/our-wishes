@@ -17,7 +17,7 @@ namespace backend.models
         public string Link { get; set; }
         public static WishDto ToDto(Wish wish)
         {
-            return new(wish.WishId, wish.Title, wish.BoughtBy, wish.Link);
+            return new(wish.WishId, wish.Title, UserDto.ToDto(wish.BoughtBy), wish.Link);
         }
     }
 }
