@@ -87,6 +87,8 @@
   },
   "lint-staged": {
     "*.ts": "eslint --cache --fix",
-    "*.tsx": "eslint --cache --fix"
+    "*.tsx": "eslint --cache --fix",
+    "*.html": "eslint --cache --fix",
+    "*.css": "prettier --check"
   }
 }
