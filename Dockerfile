@@ -4,12 +4,12 @@ WORKDIR /app
 EXPOSE 5001
 
 # Copy csproj and restore as distinct layers
-COPY backend/*.csproj ./
+COPY backend/backend/*.csproj ./
 
 RUN dotnet restore
 
 # Copy everything else and build
-COPY ./backend/ ./
+COPY ./backend/backend ./
 
 RUN dotnet publish -c Release -o out
 
