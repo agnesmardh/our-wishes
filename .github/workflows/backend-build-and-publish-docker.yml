@@ -27,3 +27,14 @@ jobs:
         with:
           push: true
           tags: ghcr.io/agnesmardh/ourwishes-backend:latest
+
+    deploy:
+      name: Deploy Backend
+      runs-on: ubuntu-18.04
+      needs: [build]
+      steps:
+        - name: Deploy backend docker container
+          uses: joelwmale/webhook-action@master
+          env:
+            WEBHOOK_URL: ${{ secrets.DEPLOY_WEBHOOK_URL  }}
+            data: "{ 'secret': '${{ secrets.DEPLOY_WEBHOOK_SECRET  }}'}"
