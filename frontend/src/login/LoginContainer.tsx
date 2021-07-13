@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { LoginForm } from './LoginForm';
 import styled from 'styled-components';
 import { Auth } from 'aws-amplify';
+import { Col, Row } from 'react-bootstrap';
 
 const handleLogin = async (
   username: string,
@@ -24,14 +25,24 @@ export const LoginContainer: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
   return (
     <>
-      <CenteredHeader>Welcome to Our Wishes</CenteredHeader>
-      <CenteredLoginContainer>
-        <LoginForm
-          handleLogin={(username, password) => handleLogin(username, password, setLoading, setErrorMessage)}
-          loading={loading}
-          errorMessage={errorMessage}
-        />
-      </CenteredLoginContainer>
+      <Row>
+        <Col>
+          <CenteredHeader>Welcome to Our Wishes</CenteredHeader>
+        </Col>
+      </Row>
+      <VerticallyCenteredRow>
+        <Col sm />
+        <Col sm>
+          <LoginContainerWithMargin>
+            <LoginForm
+              handleLogin={(username, password) => handleLogin(username, password, setLoading, setErrorMessage)}
+              loading={loading}
+              errorMessage={errorMessage}
+            />
+          </LoginContainerWithMargin>
+        </Col>
+        <Col sm />
+      </VerticallyCenteredRow>
     </>
   );
 };
@@ -41,16 +52,12 @@ const CenteredHeader = styled.h1`
   text-align: center;
 `;
 
-const CenteredLoginContainer = styled.div`
-  margin: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  width: 50%;
-  height: 50%;
-  min-width: 200px;
-  max-width: 400px;
-  padding: 40px;
+const VerticallyCenteredRow = styled(Row)`
+  height: 70vh;
+  align-items: center;
+`;
+
+const LoginContainerWithMargin = styled.div`
+  margin-left: 1vh;
+  margin-right: 1vh;
 `;
