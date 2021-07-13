@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { LoginForm } from './LoginForm';
 import styled from 'styled-components';
-import { Auth } from 'aws-amplify';
 import { Col, Row } from 'react-bootstrap';
+import { Redirect } from 'react-router-dom';
+import { UseProvideAuthType } from '../common/auth/UseProvideAuth';
+import { useAuth } from '../common/auth/ProvideAuth';
 
 const handleLogin = async (
+  auth: UseProvideAuthType,
   username: string,
   password: string,
   setLoading: (loading: boolean) => void,
@@ -12,7 +15,8 @@ const handleLogin = async (
 ) => {
   setLoading(true);
   try {
-    await Auth.signIn(username, password);
+    console.log('Sign in');
+    await auth.signIn(username, password);
     setLoading(false);
   } catch (error) {
     setLoading(false);
@@ -23,6 +27,11 @@ const handleLogin = async (
 export const LoginContainer: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const auth = useAuth();
+
+  if (auth.isAuthenticated) {
+    return <Redirect to="/" />;
+  }
   return (
     <>
       <Row>
@@ -35,7 +44,7 @@ export const LoginContainer: React.FC = () => {
         <Col sm>
           <LoginContainerWithMargin>
             <LoginForm
-              handleLogin={(username, password) => handleLogin(username, password, setLoading, setErrorMessage)}
+              handleLogin={(username, password) => handleLogin(auth, username, password, setLoading, setErrorMessage)}
               loading={loading}
               errorMessage={errorMessage}
             />

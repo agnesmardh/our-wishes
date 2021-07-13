@@ -23,7 +23,7 @@ describe('<LoginForm/>', () => {
     expect(loginForm).toMatchSnapshot();
   });
 
-  it('should call handleLogin with the provided username and password', () => {
+  it('should call handleSignUp with the provided username and password', () => {
     const loginForm = renderLoginForm(handleLoginMock, '', false);
 
     const usernameInput = loginForm.getByRole('textbox', { name: /username/i });
@@ -37,7 +37,7 @@ describe('<LoginForm/>', () => {
     expect(handleLoginMock).toHaveBeenCalledWith('UserName', 'Password');
   });
 
-  it('should not call handleLogin if password is missing', () => {
+  it('should not call handleSignUp if password is missing', () => {
     const loginForm = renderLoginForm(handleLoginMock, '', false);
 
     const usernameInput = loginForm.getByRole('textbox', { name: /username/i });
@@ -48,7 +48,7 @@ describe('<LoginForm/>', () => {
     expect(handleLoginMock).toHaveBeenCalledTimes(0);
   });
 
-  it('should not call handleLogin if username is missing', () => {
+  it('should not call handleSignUp if username is missing', () => {
     const loginForm = renderLoginForm(handleLoginMock, '', false);
 
     const passwordInput = loginForm.getByLabelText(/password/i);

@@ -62,6 +62,14 @@ export const LoginForm: React.FC<Props> = ({ handleLogin, loading, errorMessage 
       <Button variant="primary" type="submit" disabled={loading}>
         Login
       </Button>
+      <Button
+        disabled={loading}
+        onClick={() => {
+          console.log('Sign up');
+        }}
+      >
+        Sign up
+      </Button>
     </Form>
   );
 };
