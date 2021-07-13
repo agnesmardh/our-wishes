@@ -7,27 +7,31 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Tests
 {
-    public class WishlistControllerTest
+    public class WishlistControllerTest : IDisposable
     {
 
+        private static WishlistContext _context;
         private static string testUserId = "68b96e05-e6e0-4a66-b33b-28c1b189f3e8";
 
+        public void Dispose()
+        {
+            _context.Database.EnsureDeleted();
+            _context.Dispose();
+        }
+        
         private static WishlistContext GetContext()
         {
             var options = new DbContextOptionsBuilder<WishlistContext>()
-                .UseInMemoryDatabase(databaseName: "testWishlistDb")
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
-
-            // Insert seed data into the database using one instance of the context
-            var context = new WishlistContext(options);
-            WishlistContext.AddTestData(context);
-            context.SaveChanges();
+            _context = new WishlistContext(options);
+            WishlistContext.AddTestData(_context);
+            _context.SaveChanges();
             
-            return context;
+            return _context;
         }
 
         private static void MockAuth(WishlistController controller)
@@ -62,6 +66,8 @@ namespace Tests
             
             Assert.False(context.Wishlists.Any(x => x.WishlistId == 1));
             Assert.Equal(countBefore, countAfter + 1);
+            
+            context.Database.EnsureDeleted();
         }
 
         [Fact]
@@ -78,6 +84,8 @@ namespace Tests
             
             Assert.True(isUsersWishlists);
             Assert.True(wishlistDtos.Any());
+            
+            context.Database.EnsureDeleted();
         }
 
         [Fact]
@@ -94,6 +102,9 @@ namespace Tests
             controller.CreateWishlist(wishlistToCreate);
             
             Assert.Equal(context.Wishlists.Count(), countBefore + 1);
+            
+            context.Database.EnsureDeleted();
         }
+        
     }
 }
