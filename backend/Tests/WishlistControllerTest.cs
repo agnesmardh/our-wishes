@@ -14,7 +14,7 @@ namespace Tests
     {
 
         private static WishlistContext _context;
-        private static string testUserId = "68b96e05-e6e0-4a66-b33b-28c1b189f3e8";
+        private static string testUserId = "1";
 
         public void Dispose()
         {
@@ -38,36 +38,53 @@ namespace Tests
         {
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[] {
                 new Claim(ClaimTypes.NameIdentifier, testUserId),
-                new Claim(ClaimTypes.Name, "kerp@somecompany.com")
+                new Claim(ClaimTypes.Name, "test@somecompany.com")
             },"TestAuthentication"));
 
             controller.ControllerContext = new ControllerContext {HttpContext = new DefaultHttpContext {User = user}};
         }
 
         [Fact]
-        public void TestContext()
-        {
-            var context = GetContext();
-            Assert.Equal(2, context.Wishlists.Count());
-        }
-
-        [Fact]
-        public void DeleteWishlist()
+        public async void DeleteWishlist()
         {
             var context = GetContext();
             var controller = new WishlistController(context);
             MockAuth(controller);
+            
+            const int wishlistIdToDelete = 1;
 
             var countBefore = context.Wishlists.Count();
-            
-            controller.DeleteWishlist(1);
+
+            await controller.DeleteWishlist(wishlistIdToDelete);
             
             var countAfter = context.Wishlists.Count();
             
-            Assert.False(context.Wishlists.Any(x => x.WishlistId == 1));
+            Assert.False(context.Wishlists.Any(x => x.WishlistId == wishlistIdToDelete));
             Assert.Equal(countBefore, countAfter + 1);
+        }
+        
+        [Fact]
+        public async void DeleteWishlistNotPossibleIfNotOwner()
+        {
+            var context = GetContext();
+            var controller = new WishlistController(context);
+            MockAuth(controller);
             
-            context.Database.EnsureDeleted();
+            // Wishlist user with id 1 isn't the owner of
+            const int wishlistIdToDelete = 2;
+
+            var countBefore = context.Wishlists.Count();
+
+            var res = await controller.DeleteWishlist(wishlistIdToDelete);
+            var statusResult = res as UnauthorizedResult;
+            
+            Assert.NotNull(statusResult);
+            Assert.Equal(statusResult.StatusCode, StatusCodes.Status401Unauthorized);
+            
+            var countAfter = context.Wishlists.Count();
+
+            Assert.True(context.Wishlists.Any(x => x.WishlistId == wishlistIdToDelete));
+            Assert.Equal(countBefore, countAfter);
         }
 
         [Fact]
@@ -84,12 +101,10 @@ namespace Tests
             
             Assert.True(isUsersWishlists);
             Assert.True(wishlistDtos.Any());
-            
-            context.Database.EnsureDeleted();
         }
 
         [Fact]
-        public void CreateWishlist()
+        public async void CreateWishlist()
         {
             var context = GetContext();
             var controller = new WishlistController(context);
@@ -99,11 +114,9 @@ namespace Tests
 
             var countBefore = context.Wishlists.Count();
             
-            controller.CreateWishlist(wishlistToCreate);
-            
+            await controller.CreateWishlist(wishlistToCreate);
+
             Assert.Equal(context.Wishlists.Count(), countBefore + 1);
-            
-            context.Database.EnsureDeleted();
         }
         
     }

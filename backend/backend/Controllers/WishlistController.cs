@@ -93,7 +93,7 @@ namespace backend.Controllers
         {
             var wishlist = await _context.Wishlists.FindAsync(id);
 
-            if (wishlist.Owner.UserId == GetUserId())
+            if (wishlist.Owner.UserId != GetUserId())
             {
                 return Unauthorized();
             }
