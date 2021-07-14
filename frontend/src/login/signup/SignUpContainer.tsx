@@ -33,7 +33,7 @@ export const SignUpContainer: React.FC = () => {
   const auth = useAuth();
 
   if (auth.userAuthState === UserAuthState.UNCONFIRMED) {
-    return <Redirect to={'/signup/success'} />;
+    return <Redirect to={'/signup-success'} />;
   }
 
   return (
