@@ -65,6 +65,12 @@ Object {
         >
           Login
         </button>
+        <button
+          class="btn btn-primary"
+          type="button"
+        >
+          Sign up
+        </button>
       </form>
     </div>
   </body>,
@@ -128,6 +134,12 @@ Object {
         type="submit"
       >
         Login
+      </button>
+      <button
+        class="btn btn-primary"
+        type="button"
+      >
+        Sign up
       </button>
     </form>
   </div>,

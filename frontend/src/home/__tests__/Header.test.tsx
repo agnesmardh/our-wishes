@@ -3,9 +3,15 @@ import { render } from '@testing-library/react';
 import { Header } from '../Header';
 import userEvent from '@testing-library/user-event';
 
-import awsAmplify from 'aws-amplify';
+const mockSignOutFn = jest.fn();
 
-jest.mock('aws-amplify');
+jest.mock('../../common/auth/ProvideAuth', () => {
+  return {
+    useAuth: () => ({
+      signOut: mockSignOutFn
+    })
+  };
+});
 
 describe('<Header/>', () => {
   const renderHeader = () => {
@@ -19,11 +25,9 @@ describe('<Header/>', () => {
 
   it('should call Auth.signOut when signOut button is pressed', () => {
     const header = renderHeader();
-    const signOutMock = jest.fn();
-    awsAmplify.Auth.signOut = signOutMock;
 
     const signOutButton = header.getByRole('button', { name: /sign out/i });
     userEvent.click(signOutButton);
-    expect(signOutMock).toHaveBeenCalledTimes(1);
+    expect(mockSignOutFn).toHaveBeenCalledTimes(1);
   });
 });
