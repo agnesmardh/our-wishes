@@ -7,6 +7,7 @@ import { UserAuthState } from './type/UserAuthState';
 export type UseProvideAuthType = {
   signIn: (username: string, password: string) => Promise<void>;
   signUp: (username: string, password: string, email: string, phoneNumber: string) => Promise<ISignUpResult>;
+  confirmUser: (username: string, code: string) => Promise<void>;
   signOut: () => Promise<void>;
   userAuthState: UserAuthState;
   isAuthenticated?: boolean;
@@ -67,10 +68,21 @@ export const useProvideAuth = (): UseProvideAuthType => {
     }
   };
 
+  const confirmUser = async (username: string, code: string): Promise<void> => {
+    try {
+      await Auth.confirmSignUp(username, code);
+      setUserAuthState(UserAuthState.CONFIRMED);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
   return {
     signIn,
     signUp,
     signOut,
+    confirmUser,
     userAuthState,
     isAuthenticated: userAuthState === UserAuthState.AUTHENTICATED
   };
