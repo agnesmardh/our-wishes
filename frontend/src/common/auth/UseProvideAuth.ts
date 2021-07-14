@@ -19,10 +19,8 @@ export const useProvideAuth = (): UseProvideAuthType => {
 
   const signIn = async (email: string, password: string) => {
     try {
-      console.log('Auth.signin');
       const user = await Auth.signIn(email, password);
       if (user) {
-        console.log('isAuthenticated = true');
         setIsAuthenticated(true);
       }
       return user;

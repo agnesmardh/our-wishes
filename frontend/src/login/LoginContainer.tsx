@@ -15,7 +15,6 @@ const handleLogin = async (
 ) => {
   setLoading(true);
   try {
-    console.log('Sign in');
     await auth.signIn(username, password);
     setLoading(false);
   } catch (error) {
