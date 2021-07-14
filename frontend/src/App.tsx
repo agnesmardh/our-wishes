@@ -2,12 +2,12 @@ import React from 'react';
 import { Amplify } from 'aws-amplify';
 import { HomeContainer } from './home/HomeContainer';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { LoginContainer } from './login/LoginContainer';
+import { LoginContainer } from './login/login/LoginContainer';
 import { ProvideAuth } from './common/auth/ProvideAuth';
 import { PrivateRoute } from './common/auth/PrivateRoute';
-import { SignUpContainer } from './login/SignUpContainer';
-import { SignupSuccess } from './login/SignupSuccess';
-import { ConfirmUserContainer } from './login/ConfirmUserContainer';
+import { SignUpContainer } from './login/signup/SignUpContainer';
+import { SignupSuccess } from './login/signup/SignupSuccess';
+import { ConfirmUserContainer } from './login/confirm/ConfirmUserContainer';
 
 Amplify.configure({
   aws_cognito_region: process.env.REACT_APP_COGNITO_REGION,

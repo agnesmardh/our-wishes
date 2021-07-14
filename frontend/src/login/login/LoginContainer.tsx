@@ -3,8 +3,8 @@ import { LoginForm } from './LoginForm';
 import styled from 'styled-components';
 import { Col, Row } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
-import { UseProvideAuthType } from '../common/auth/UseProvideAuth';
-import { useAuth } from '../common/auth/ProvideAuth';
+import { UseProvideAuthType } from '../../common/auth/UseProvideAuth';
+import { useAuth } from '../../common/auth/ProvideAuth';
 
 const handleLogin = async (
   auth: UseProvideAuthType,

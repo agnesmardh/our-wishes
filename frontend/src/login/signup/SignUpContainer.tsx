@@ -1,22 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Col, Row } from 'react-bootstrap';
-import { UseProvideAuthType } from '../common/auth/UseProvideAuth';
-import { useAuth } from '../common/auth/ProvideAuth';
-import { UserAuthState } from '../common/auth/type/UserAuthState';
-import { ConfirmUserForm } from './ConfirmUserForm';
-import { Redirect, useParams } from 'react-router-dom';
+import { SignUpForm } from './SignUpForm';
+import { UseProvideAuthType } from '../../common/auth/UseProvideAuth';
+import { useAuth } from '../../common/auth/ProvideAuth';
+import { UserAuthState } from '../../common/auth/type/UserAuthState';
+import { Redirect } from 'react-router-dom';
 
-const handleConfirmUser = async (
+const handleSignUp = async (
   auth: UseProvideAuthType,
   username: string,
-  code: string,
+  password: string,
+  email: string,
+  phoneNumber: string,
   setLoading: (loading: boolean) => void,
   setErrorMessage: (value: string) => void
 ) => {
   setLoading(true);
   try {
-    await auth.confirmUser(username, code);
+    await auth.signUp(username, password, email, phoneNumber);
     setLoading(false);
   } catch (error) {
     console.log(error);
@@ -25,29 +27,13 @@ const handleConfirmUser = async (
   }
 };
 
-interface Params {
-  username?: string;
-  code?: string;
-}
-
-export const ConfirmUserContainer: React.FC = () => {
+export const SignUpContainer: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-
-  const { username, code } = useParams<Params>();
   const auth = useAuth();
 
-  useEffect(() => {
-    const confirmUser = async () => {
-      if (username && code) {
-        await handleConfirmUser(auth, username, code, setLoading, setErrorMessage);
-      }
-    };
-    confirmUser();
-  }, [username, code]);
-
-  if (auth.userAuthState === UserAuthState.CONFIRMED) {
-    return <Redirect to={'/login'} />;
+  if (auth.userAuthState === UserAuthState.UNCONFIRMED) {
+    return <Redirect to={'/signup/success'} />;
   }
 
   return (
@@ -61,11 +47,9 @@ export const ConfirmUserContainer: React.FC = () => {
         <Col sm />
         <Col sm>
           <LoginContainerWithMargin>
-            <ConfirmUserForm
-              presetUsername={username}
-              presetCode={code}
-              handleConfirmUser={(username, password) =>
-                handleConfirmUser(auth, username, password, setLoading, setErrorMessage)
+            <SignUpForm
+              handleSignUp={(username, password, email, phoneNumber) =>
+                handleSignUp(auth, username, password, email, phoneNumber, setLoading, setErrorMessage)
               }
               loading={loading}
               errorMessage={errorMessage}

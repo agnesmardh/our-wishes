@@ -59,18 +59,22 @@ Object {
           </div>
         </div>
         
-        <button
-          class="btn btn-primary"
-          type="submit"
+        <div
+          class="sc-dkPtyc ehPQLf col"
         >
-          Login
-        </button>
-        <button
-          class="btn btn-primary"
-          type="button"
-        >
-          Sign up
-        </button>
+          <button
+            class="btn btn-primary"
+            type="submit"
+          >
+            Login
+          </button>
+          <a
+            class="btn btn-primary"
+            href="/signup"
+          >
+            Sign up
+          </a>
+        </div>
       </form>
     </div>
   </body>,
@@ -129,18 +133,22 @@ Object {
         </div>
       </div>
       
-      <button
-        class="btn btn-primary"
-        type="submit"
+      <div
+        class="sc-dkPtyc ehPQLf col"
       >
-        Login
-      </button>
-      <button
-        class="btn btn-primary"
-        type="button"
-      >
-        Sign up
-      </button>
+        <button
+          class="btn btn-primary"
+          type="submit"
+        >
+          Login
+        </button>
+        <a
+          class="btn btn-primary"
+          href="/signup"
+        >
+          Sign up
+        </a>
+      </div>
     </form>
   </div>,
   "debug": [Function],

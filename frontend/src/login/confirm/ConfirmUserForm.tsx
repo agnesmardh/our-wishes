@@ -1,6 +1,7 @@
-import { Button, Form, Spinner } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import { LoginLoadingIndicator } from '../common/LoginLoadingIndicator';
+import { ErrorMessage } from '../common/Components';
 
 interface Props {
   handleConfirmUser: (username: string, code: string) => void;
@@ -37,13 +38,7 @@ export const ConfirmUserForm: React.FC<Props> = ({
         }
       }}
     >
-      {loading && (
-        <CenteredSpinner>
-          <Spinner animation="border" role="status">
-            <span className="sr-only">Loading...</span>
-          </Spinner>
-        </CenteredSpinner>
-      )}
+      {loading && <LoginLoadingIndicator />}
       <Form.Group controlId="formBasicUsername">
         <Form.Label>Username</Form.Label>
         <Form.Control
@@ -74,15 +69,3 @@ export const ConfirmUserForm: React.FC<Props> = ({
     </Form>
   );
 };
-
-const ErrorMessage = styled.p`
-  color: red;
-`;
-
-const CenteredSpinner = styled.div`
-  position: absolute;
-  top: 35%;
-  left: 50%;
-  opacity: 0.5;
-  transform: translate(-50%, -50%);
-`;
