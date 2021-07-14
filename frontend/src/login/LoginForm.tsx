@@ -1,4 +1,4 @@
-import { Button, Form, Spinner } from 'react-bootstrap';
+import { Button, Col, Form, Spinner } from 'react-bootstrap';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -59,20 +59,23 @@ export const LoginForm: React.FC<Props> = ({ handleLogin, loading, errorMessage 
         <Form.Control.Feedback type="invalid">Please provide a password</Form.Control.Feedback>
       </Form.Group>
       {errorMessage && !loading && <ErrorMessage>{errorMessage}</ErrorMessage>}
-      <Button variant="primary" type="submit" disabled={loading}>
-        Login
-      </Button>
-      <Button
-        disabled={loading}
-        onClick={() => {
-          console.log('Sign up');
-        }}
-      >
-        Sign up
-      </Button>
+      <ButtonCol>
+        <Button variant="primary" type="submit" disabled={loading}>
+          Login
+        </Button>
+        <Button href={'/signup'} disabled={loading}>
+          Sign up
+        </Button>
+      </ButtonCol>
     </Form>
   );
 };
+
+const ButtonCol = styled(Col)`
+  justify-content: space-between;
+  display: flex;
+  padding: 0;
+`;
 
 const ErrorMessage = styled.p`
   color: red;

@@ -59,7 +59,6 @@ export const useProvideAuth = (): UseProvideAuthType => {
           phone_number: phoneNumber
         }
       });
-      console.log(signUpResult.user);
       setUserAuthState(UserAuthState.UNCONFIRMED);
       return signUpResult;
     } catch (error) {

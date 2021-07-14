@@ -20,7 +20,6 @@ const handleSignUp = async (
   try {
     const { user } = await auth.signUp(username, password, email, phoneNumber);
     setLoading(false);
-    console.log(user);
   } catch (error) {
     console.log(error);
     setLoading(false);
