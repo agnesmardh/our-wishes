@@ -4,11 +4,15 @@ on:
   push:
     branches: [ main ]
 
+
 jobs:
   build:
 
-    environment: github-pages
+    environment: s3
     runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     defaults:
       run:
         working-directory: ./frontend
@@ -29,11 +33,15 @@ jobs:
           REACT_APP_COGNITO_REGION: ${{ secrets.REACT_APP_COGNITO_REGION }}
           REACT_APP_COGNITO_USER_POOL_ID: ${{ secrets.REACT_APP_COGNITO_USER_POOL_ID }}
           REACT_APP_COGNITO_APP_CLIENT_ID: ${{ secrets.REACT_APP_COGNITO_APP_CLIENT_ID }}
-      - name: GitHub Pages
+      - name: Deploy to S3
         if: success()
-        uses: crazy-max/ghaction-github-pages@v2.3.0
+        uses: reggionick/s3-deploy@v3
         with:
-          target_branch: gh-pages
-          build_dir: ./frontend/build
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          folder: ./frontend/build
+          bucket: ${{ secrets.S3_BUCKET }}
+          bucket-region: ${{ secrets.S3_BUCKET_REGION }}
+          dist-id: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+          invalidation: /
+          delete-removed: true
+          no-cache: true
+          private: true
