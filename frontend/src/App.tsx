@@ -5,6 +5,8 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { LoginContainer } from './login/LoginContainer';
 import { ProvideAuth } from './common/auth/ProvideAuth';
 import { PrivateRoute } from './common/auth/PrivateRoute';
+import { SignUpContainer } from './login/SignUpContainer';
+import { SignupSuccess } from './login/SignupSuccess';
 
 Amplify.configure({
   aws_cognito_region: process.env.REACT_APP_COGNITO_REGION,
@@ -19,6 +21,12 @@ export const App: React.FC = () => {
         <Switch>
           <Route path="/login">
             <LoginContainer />
+          </Route>
+          <Route path="/signup">
+            <SignUpContainer />
+          </Route>
+          <Route path="/signup-success">
+            <SignupSuccess email={'test@example.com'} />
           </Route>
           <PrivateRoute path="/">
             <HomeContainer />
