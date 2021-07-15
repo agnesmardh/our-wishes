@@ -87,7 +87,7 @@
   "lint-staged": {
     "*.ts": "eslint --cache --fix",
     "*.tsx": "eslint --cache --fix",
-    "*.html": "eslint --cache --fix",
+    "*.html": "prettier --check",
     "*.css": "prettier --check"
   }
 }

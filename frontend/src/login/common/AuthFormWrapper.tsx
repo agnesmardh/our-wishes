@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { Col, Row } from 'react-bootstrap';
+import LogoName from '../../assets/Logo.svg';
 
 interface Props {
   children: ReactNode;
@@ -9,10 +10,12 @@ interface Props {
 export const AuthFormWrapper: React.FC<Props> = ({ children }: Props) => {
   return (
     <>
-      <Row>
+      <Row className={'align-items-center '}>
+        <Col />
         <Col>
-          <CenteredHeader>Welcome to Our Wishes</CenteredHeader>
+          <CenteredImage src={LogoName} alt="logo" width={300} height={300} />
         </Col>
+        <Col />
       </Row>
       <VerticallyCenteredRow>
         <Col sm />
@@ -25,13 +28,13 @@ export const AuthFormWrapper: React.FC<Props> = ({ children }: Props) => {
   );
 };
 
-const CenteredHeader = styled.h1`
-  margin-top: 1vh;
-  text-align: center;
+const CenteredImage = styled.img`
+  display: block;
+  margin: 1vh auto auto;
 `;
 
 const VerticallyCenteredRow = styled(Row)`
-  height: 70vh;
+  height: 45vh;
   align-items: center;
 `;
 

@@ -5,13 +5,15 @@ import { Col, Container, Row } from 'react-bootstrap';
 
 export const HomeContainer: React.FC = () => {
   return (
-    <Container fluid>
-      <Row>
-        <Col>
-          <Header />
-          <WishlistsContainer />
-        </Col>
-      </Row>
-    </Container>
+    <>
+      <Header />
+      <Container fluid>
+        <Row>
+          <Col>
+            <WishlistsContainer />
+          </Col>
+        </Row>
+      </Container>
+    </>
   );
 };
