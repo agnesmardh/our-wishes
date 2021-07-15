@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { Col, Row } from 'react-bootstrap';
 import { UseProvideAuthType } from '../../common/auth/UseProvideAuth';
 import { useAuth } from '../../common/auth/ProvideAuth';
 import { UserAuthState } from '../../common/auth/type/UserAuthState';
 import { ConfirmUserForm } from './ConfirmUserForm';
 import { Redirect, useParams } from 'react-router-dom';
+import { AuthFormWrapper } from '../common/AuthFormWrapper';
 
 const handleConfirmUser = async (
   auth: UseProvideAuthType,
@@ -51,44 +50,16 @@ export const ConfirmUserContainer: React.FC = () => {
   }
 
   return (
-    <>
-      <Row>
-        <Col>
-          <CenteredHeader>Welcome to Our Wishes</CenteredHeader>
-        </Col>
-      </Row>
-      <VerticallyCenteredRow>
-        <Col sm />
-        <Col sm>
-          <LoginContainerWithMargin>
-            <ConfirmUserForm
-              presetUsername={username}
-              presetCode={code}
-              handleConfirmUser={(username, password) =>
-                handleConfirmUser(auth, username, password, setLoading, setErrorMessage)
-              }
-              loading={loading}
-              errorMessage={errorMessage}
-            />
-          </LoginContainerWithMargin>
-        </Col>
-        <Col sm />
-      </VerticallyCenteredRow>
-    </>
+    <AuthFormWrapper>
+      <ConfirmUserForm
+        presetUsername={username}
+        presetCode={code}
+        handleConfirmUser={(username, password) =>
+          handleConfirmUser(auth, username, password, setLoading, setErrorMessage)
+        }
+        loading={loading}
+        errorMessage={errorMessage}
+      />
+    </AuthFormWrapper>
   );
 };
-
-const CenteredHeader = styled.h1`
-  margin-top: 1vh;
-  text-align: center;
-`;
-
-const VerticallyCenteredRow = styled(Row)`
-  height: 70vh;
-  align-items: center;
-`;
-
-const LoginContainerWithMargin = styled.div`
-  margin-left: 1vh;
-  margin-right: 1vh;
-`;

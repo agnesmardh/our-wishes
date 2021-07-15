@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import { Col, Row } from 'react-bootstrap';
 import { SignUpForm } from './SignUpForm';
 import { UseProvideAuthType } from '../../common/auth/UseProvideAuth';
 import { useAuth } from '../../common/auth/ProvideAuth';
 import { UserAuthState } from '../../common/auth/type/UserAuthState';
 import { Redirect } from 'react-router-dom';
+import { AuthFormWrapper } from '../common/AuthFormWrapper';
 
 const handleSignUp = async (
   auth: UseProvideAuthType,
@@ -37,42 +36,14 @@ export const SignUpContainer: React.FC = () => {
   }
 
   return (
-    <>
-      <Row>
-        <Col>
-          <CenteredHeader>Welcome to Our Wishes</CenteredHeader>
-        </Col>
-      </Row>
-      <VerticallyCenteredRow>
-        <Col sm />
-        <Col sm>
-          <LoginContainerWithMargin>
-            <SignUpForm
-              handleSignUp={(username, password, email, phoneNumber) =>
-                handleSignUp(auth, username, password, email, phoneNumber, setLoading, setErrorMessage)
-              }
-              loading={loading}
-              errorMessage={errorMessage}
-            />
-          </LoginContainerWithMargin>
-        </Col>
-        <Col sm />
-      </VerticallyCenteredRow>
-    </>
+    <AuthFormWrapper>
+      <SignUpForm
+        handleSignUp={(username, password, email, phoneNumber) =>
+          handleSignUp(auth, username, password, email, phoneNumber, setLoading, setErrorMessage)
+        }
+        loading={loading}
+        errorMessage={errorMessage}
+      />
+    </AuthFormWrapper>
   );
 };
-
-const CenteredHeader = styled.h1`
-  margin-top: 1vh;
-  text-align: center;
-`;
-
-const VerticallyCenteredRow = styled(Row)`
-  height: 70vh;
-  align-items: center;
-`;
-
-const LoginContainerWithMargin = styled.div`
-  margin-left: 1vh;
-  margin-right: 1vh;
-`;

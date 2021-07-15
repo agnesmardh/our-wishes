@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { LoginForm } from './LoginForm';
-import styled from 'styled-components';
-import { Col, Row } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 import { UseProvideAuthType } from '../../common/auth/UseProvideAuth';
 import { useAuth } from '../../common/auth/ProvideAuth';
+import { AuthFormWrapper } from '../common/AuthFormWrapper';
 
 const handleLogin = async (
   auth: UseProvideAuthType,
@@ -32,40 +31,12 @@ export const LoginContainer: React.FC = () => {
     return <Redirect to="/" />;
   }
   return (
-    <>
-      <Row>
-        <Col>
-          <CenteredHeader>Welcome to Our Wishes</CenteredHeader>
-        </Col>
-      </Row>
-      <VerticallyCenteredRow>
-        <Col sm />
-        <Col sm>
-          <LoginContainerWithMargin>
-            <LoginForm
-              handleLogin={(username, password) => handleLogin(auth, username, password, setLoading, setErrorMessage)}
-              loading={loading}
-              errorMessage={errorMessage}
-            />
-          </LoginContainerWithMargin>
-        </Col>
-        <Col sm />
-      </VerticallyCenteredRow>
-    </>
+    <AuthFormWrapper>
+      <LoginForm
+        handleLogin={(username, password) => handleLogin(auth, username, password, setLoading, setErrorMessage)}
+        loading={loading}
+        errorMessage={errorMessage}
+      />
+    </AuthFormWrapper>
   );
 };
-
-const CenteredHeader = styled.h1`
-  margin-top: 1vh;
-  text-align: center;
-`;
-
-const VerticallyCenteredRow = styled(Row)`
-  height: 70vh;
-  align-items: center;
-`;
-
-const LoginContainerWithMargin = styled.div`
-  margin-left: 1vh;
-  margin-right: 1vh;
-`;
