@@ -12,7 +12,6 @@ export const Header: React.FC = () => {
       <Navbar.Brand href="/">
         <SmallLogo /> <HeaderBrandTitle>Our Wishes</HeaderBrandTitle>
       </Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Nav className="mr-auto" />
       <UserInfoContainer>
         <UserAvatar size={32} />
