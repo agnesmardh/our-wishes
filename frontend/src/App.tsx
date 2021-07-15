@@ -27,7 +27,7 @@ export const App: React.FC = () => {
             <SignUpContainer />
           </Route>
           <Route path="/signup-success">
-            <SignupSuccess email={'test@example.com'} />
+            <SignupSuccess />
           </Route>
           <Route path="/confirm/:username/:code">
             <ConfirmUserContainer />
