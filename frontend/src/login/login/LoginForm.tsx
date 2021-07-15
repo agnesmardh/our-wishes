@@ -1,6 +1,8 @@
-import { Button, Form, Spinner } from 'react-bootstrap';
+import { Button, Col, Form } from 'react-bootstrap';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { ErrorMessage } from '../common/Components';
+import { LoginLoadingIndicator } from '../common/LoginLoadingIndicator';
 
 interface Props {
   handleLogin: (username: string, password: string) => void;
@@ -29,13 +31,7 @@ export const LoginForm: React.FC<Props> = ({ handleLogin, loading, errorMessage 
         }
       }}
     >
-      {loading && (
-        <CenteredSpinner>
-          <Spinner animation="border" role="status">
-            <span className="sr-only">Loading...</span>
-          </Spinner>
-        </CenteredSpinner>
-      )}
+      {loading && <LoginLoadingIndicator />}
       <Form.Group controlId="formBasicUsername">
         <Form.Label>Username</Form.Label>
         <Form.Control
@@ -59,29 +55,20 @@ export const LoginForm: React.FC<Props> = ({ handleLogin, loading, errorMessage 
         <Form.Control.Feedback type="invalid">Please provide a password</Form.Control.Feedback>
       </Form.Group>
       {errorMessage && !loading && <ErrorMessage>{errorMessage}</ErrorMessage>}
-      <Button variant="primary" type="submit" disabled={loading}>
-        Login
-      </Button>
-      <Button
-        disabled={loading}
-        onClick={() => {
-          console.log('Sign up');
-        }}
-      >
-        Sign up
-      </Button>
+      <ButtonCol>
+        <Button variant="primary" type="submit" disabled={loading}>
+          Login
+        </Button>
+        <Button href={'/signup'} disabled={loading}>
+          Sign up
+        </Button>
+      </ButtonCol>
     </Form>
   );
 };
 
-const ErrorMessage = styled.p`
-  color: red;
-`;
-
-const CenteredSpinner = styled.div`
-  position: absolute;
-  top: 35%;
-  left: 50%;
-  opacity: 0.5;
-  transform: translate(-50%, -50%);
+const ButtonCol = styled(Col)`
+  justify-content: space-between;
+  display: flex;
+  padding: 0;
 `;

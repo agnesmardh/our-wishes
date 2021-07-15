@@ -31,16 +31,18 @@ const generateWish = (numberOfWishes: number): WishDTO[] => {
 };
 
 export const Wishlists: React.FC<Props> = ({ wishlists }: Props) => {
-  for (let i = 0; i < 15; i++) {
-    wishlists.push({
-      archived: '',
-      deadline: '',
-      id: `${i}`,
-      owner: wishlists[0].owner,
-      shareableLink: '',
-      title: `Wishlist #${i + 1}`,
-      wishes: generateWish(i + 4)
-    });
+  if (wishlists.length > 0) {
+    for (let i = 0; i < 15; i++) {
+      wishlists.push({
+        archived: '',
+        deadline: '',
+        id: `${i}`,
+        owner: wishlists[0].owner,
+        shareableLink: '',
+        title: `Wishlist #${i + 1}`,
+        wishes: generateWish(i + 4)
+      });
+    }
   }
   return (
     <Masonry

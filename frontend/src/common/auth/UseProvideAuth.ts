@@ -1,43 +1,88 @@
 import { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { userIsAuthenticated } from './AuthUtil';
+import { ISignUpResult } from 'amazon-cognito-identity-js';
+import { UserAuthState } from './type/UserAuthState';
 
 export type UseProvideAuthType = {
-  signIn: (email: string, password: string) => Promise<void>;
+  signIn: (username: string, password: string) => Promise<void>;
+  signUp: (username: string, password: string, email: string, phoneNumber: string) => Promise<ISignUpResult>;
+  confirmUser: (username: string, code: string) => Promise<void>;
   signOut: () => Promise<void>;
+  userAuthState: UserAuthState;
   isAuthenticated?: boolean;
 };
 
 export const useProvideAuth = (): UseProvideAuthType => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(undefined);
+  const [userAuthState, setUserAuthState] = useState<UserAuthState>(UserAuthState.LOGGED_OUT);
   useEffect(() => {
     const fetchIsAuthenticated = async () => {
-      setIsAuthenticated(await userIsAuthenticated());
+      if (await userIsAuthenticated()) {
+        setUserAuthState(UserAuthState.AUTHENTICATED);
+      } else {
+        setUserAuthState(UserAuthState.LOGGED_OUT);
+      }
     };
     fetchIsAuthenticated();
   });
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (username: string, password: string) => {
     try {
-      const user = await Auth.signIn(email, password);
+      const user = await Auth.signIn(username, password);
       if (user) {
-        setIsAuthenticated(true);
+        setUserAuthState(UserAuthState.AUTHENTICATED);
       }
       return user;
     } catch (e) {
-      setIsAuthenticated(false);
+      setUserAuthState(UserAuthState.LOGGED_OUT);
       throw e;
     }
   };
 
   const signOut = async () => {
     await Auth.signOut();
-    setIsAuthenticated(false);
+    setUserAuthState(UserAuthState.LOGGED_OUT);
+  };
+
+  const signUp = async (
+    username: string,
+    password: string,
+    email: string,
+    phoneNumber: string
+  ): Promise<ISignUpResult> => {
+    try {
+      const signUpResult = await Auth.signUp({
+        username,
+        password,
+        attributes: {
+          email,
+          phone_number: phoneNumber
+        }
+      });
+      setUserAuthState(UserAuthState.UNCONFIRMED);
+      return signUpResult;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
+  const confirmUser = async (username: string, code: string): Promise<void> => {
+    try {
+      await Auth.confirmSignUp(username, code);
+      setUserAuthState(UserAuthState.CONFIRMED);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   };
 
   return {
     signIn,
+    signUp,
     signOut,
-    isAuthenticated
+    confirmUser,
+    userAuthState,
+    isAuthenticated: userAuthState === UserAuthState.AUTHENTICATED
   };
 };
