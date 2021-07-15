@@ -27,7 +27,7 @@ export const Header: React.FC = () => {
 };
 
 const HeaderBrandTitle = styled.span`
-  font-family: FredokaOne, serif;
+  font-family: PermanentMarker, serif;
   display: inline;
 `;
 
