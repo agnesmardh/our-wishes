@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { Col, Row } from 'react-bootstrap';
-import LogoName from '../../assets/Logo.svg';
+import Logo from '../../assets/logo.svg';
 
 interface Props {
   children: ReactNode;
@@ -13,7 +13,7 @@ export const AuthFormWrapper: React.FC<Props> = ({ children }: Props) => {
       <Row className={'align-items-center '}>
         <Col />
         <Col>
-          <CenteredImage src={LogoName} alt="logo" width={300} height={300} />
+          <CenteredImage src={Logo} alt="logo" width={300} height={300} />
         </Col>
         <Col />
       </Row>
