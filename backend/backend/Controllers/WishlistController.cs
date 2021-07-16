@@ -63,7 +63,7 @@ namespace backend.Controllers
                     new Wish(rng.Next(), "Testwish", null, "")
                 },
                 Archived = false,
-                Deadline = new DateTime(2021, 12, 24),
+                Deadline = createWishlist.Deadline,
                 ShareableLink = ""
             };
 
