@@ -1,17 +1,13 @@
 import React from 'react';
 import { Amplify } from 'aws-amplify';
 import { HomeContainer } from './home/HomeContainer';
-import {
-  ConfirmSignIn,
-  ConfirmSignUp,
-  ForgotPassword,
-  RequireNewPassword,
-  SignUp,
-  VerifyContact,
-  withAuthenticator
-} from 'aws-amplify-react';
-
-import { LoginContainer } from './login/LoginContainer';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { LoginContainer } from './login/login/LoginContainer';
+import { ProvideAuth } from './common/auth/ProvideAuth';
+import { PrivateRoute } from './common/auth/PrivateRoute';
+import { SignUpContainer } from './login/signup/SignUpContainer';
+import { SignupSuccess } from './login/signup/SignupSuccess';
+import { ConfirmUserContainer } from './login/confirm/ConfirmUserContainer';
 
 Amplify.configure({
   aws_cognito_region: process.env.REACT_APP_COGNITO_REGION,
@@ -19,14 +15,28 @@ Amplify.configure({
   aws_user_pools_web_client_id: process.env.REACT_APP_COGNITO_APP_CLIENT_ID
 });
 
-const App: React.FC = () => <HomeContainer />;
-
-export default withAuthenticator(App, false, [
-  <LoginContainer key={1} />,
-  <ConfirmSignIn key={2} />,
-  <VerifyContact key={3} />,
-  <SignUp key={4} />,
-  <ConfirmSignUp key={5} />,
-  <ForgotPassword key={6} />,
-  <RequireNewPassword key={7} />
-]);
+export const App: React.FC = () => {
+  return (
+    <ProvideAuth>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/login">
+            <LoginContainer />
+          </Route>
+          <Route path="/signup">
+            <SignUpContainer />
+          </Route>
+          <Route path="/signup-success">
+            <SignupSuccess />
+          </Route>
+          <Route path="/confirm/:username/:code">
+            <ConfirmUserContainer />
+          </Route>
+          <PrivateRoute path="/">
+            <HomeContainer />
+          </PrivateRoute>
+        </Switch>
+      </BrowserRouter>
+    </ProvideAuth>
+  );
+};

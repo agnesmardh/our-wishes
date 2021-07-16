@@ -14,4 +14,4 @@ The backend is written in C# and can be found in `./backend`
 
 The frontend is written in React and can be found in `./frontend`
 
-The site is currently hosted here: https://agnesmardh.github.io/our-wishes/
+The site is currently hosted here: https://ourwishes.net
