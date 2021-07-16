@@ -13,7 +13,9 @@ export const AuthFormWrapper: React.FC<Props> = ({ children }: Props) => {
       <Row className={'align-items-center '}>
         <Col />
         <Col>
-          <CenteredImage src={Logo} alt="logo" width={300} height={300} />
+          <a href={'/'}>
+            <CenteredImage src={Logo} alt="logo" width={300} height={300} />
+          </a>
         </Col>
         <Col />
       </Row>
