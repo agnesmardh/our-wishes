@@ -31,6 +31,17 @@ jobs:
       with:
         languages: ${{ matrix.language }}
 
+    - if: matrix.language == 'javascript'
+      name: Autobuild
+      uses: github/codeql-action/autobuild@v1
+
+    - if: matrix.language == 'csharp' 
+      name: Build Dotnet
+      run: |
+        cd ./backend/backend
+        dotnet restore
+        dotnet build
+
     - name: Autobuild
       uses: github/codeql-action/autobuild@v1
 

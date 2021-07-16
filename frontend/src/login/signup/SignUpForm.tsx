@@ -58,7 +58,7 @@ export const SignUpForm: React.FC<Props> = ({ handleSignUp, loading, errorMessag
         <Form.Control.Feedback type="invalid">Please provide a valid email address.</Form.Control.Feedback>
       </Form.Group>
 
-      <Form.Group controlId="formBasicEmail">
+      <Form.Group controlId="formBasicPhoneNumber">
         <Form.Label>Phone Number</Form.Label>
         <Form.Control
           type="phone"
@@ -77,6 +77,8 @@ export const SignUpForm: React.FC<Props> = ({ handleSignUp, loading, errorMessag
           onChange={event => setPassword(event.target.value)}
         />
         <Form.Control.Feedback type="invalid">Please provide a password</Form.Control.Feedback>
+      </Form.Group>
+      <Form.Group controlId="formBasicConfirmPassword">
         <Form.Label>Confirm Password</Form.Label>
         <Form.Control
           type="password"

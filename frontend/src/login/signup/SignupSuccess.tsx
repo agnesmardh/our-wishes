@@ -14,8 +14,11 @@ export const SignupSuccess: React.FC = () => {
       <Row>
         <CenteredCol>
           <h3>
-            You have successfully signed up for Our Wishes! Please check the email you provided for a verification
-            email.
+            <p>You have successfully signed up for Our Wishes!</p>
+            <p> Please check the email address you provided for a verification email.</p>
+            <p>
+              <a href={'/'}>Click here to go back.</a>
+            </p>
           </h3>
         </CenteredCol>
       </Row>

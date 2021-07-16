@@ -27,7 +27,7 @@ export const LoginContainer: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const auth = useAuth();
 
-  if (auth.isAuthenticated) {
+  if (auth.isAuthenticated && !loading) {
     return <Redirect to="/" />;
   }
   return (

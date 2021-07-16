@@ -59,7 +59,7 @@ export const LoginForm: React.FC<Props> = ({ handleLogin, loading, errorMessage 
         <Button variant="primary" type="submit" disabled={loading}>
           Login
         </Button>
-        <Button href={'/signup'} disabled={loading}>
+        <Button variant="secondary" href={'/signup'} color={'grey'} disabled={loading}>
           Sign up
         </Button>
       </ButtonCol>

@@ -60,7 +60,7 @@ Object {
         </div>
         
         <div
-          class="sc-dkPtyc ehPQLf col"
+          class="sc-dlnjwi eqxjHK col"
         >
           <button
             class="btn btn-primary"
@@ -69,7 +69,8 @@ Object {
             Login
           </button>
           <a
-            class="btn btn-primary"
+            class="btn btn-secondary"
+            color="grey"
             href="/signup"
           >
             Sign up
@@ -134,7 +135,7 @@ Object {
       </div>
       
       <div
-        class="sc-dkPtyc ehPQLf col"
+        class="sc-dlnjwi eqxjHK col"
       >
         <button
           class="btn btn-primary"
@@ -143,7 +144,8 @@ Object {
           Login
         </button>
         <a
-          class="btn btn-primary"
+          class="btn btn-secondary"
+          color="grey"
           href="/signup"
         >
           Sign up

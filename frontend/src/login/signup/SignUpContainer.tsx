@@ -31,7 +31,7 @@ export const SignUpContainer: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const auth = useAuth();
 
-  if (auth.userAuthState === UserAuthState.UNCONFIRMED) {
+  if (auth.userAuthState === UserAuthState.UNCONFIRMED && !loading) {
     return <Redirect to={'/signup-success'} />;
   }
 
