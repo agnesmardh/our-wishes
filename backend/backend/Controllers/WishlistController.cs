@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using backend.models;
@@ -14,13 +13,10 @@ namespace backend.Controllers
     [ApiController]
     [Route("[controller]")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class WishlistController : ControllerBase
+    public class WishlistController : BaseController
     {
-        private readonly WishlistContext _context;
-
-        public WishlistController(WishlistContext context)
+        public WishlistController(WishlistContext context) : base(context)
         {
-            _context = context;
         }
 
         [HttpGet("{id}")]
@@ -70,22 +66,7 @@ namespace backend.Controllers
             _context.Wishlists.Add(wishlist);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(
-                nameof(GetWishlist),
-                new { id = wishlist.WishlistId },
-                WishlistDto.ToDto(wishlist));
-        }
-
-        private async Task<User> GetCurrentUser()
-        {
-            var userId = GetUserId();
-            var user = await _context.Users.FindAsync(userId);
-            return user;
-        }
-
-        private string GetUserId()
-        {
-            return User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return WishlistDto.ToDto(wishlist);
         }
 
         [HttpDelete("{id}")]

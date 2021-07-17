@@ -90,9 +90,13 @@ namespace Tests
 
             var countBefore = _context.Wishlists.Count();
             
-            await controller.CreateWishlist(wishlistToCreate);
+            var res = await controller.CreateWishlist(wishlistToCreate);
+            var wishlistId = res.Value.Id;
+            
+            var wishlistHasBeenAdded = _context.Wishlists.Any(w => w.WishlistId == wishlistId);
 
             Assert.Equal(_context.Wishlists.Count(), countBefore + 1);
+            Assert.True(wishlistHasBeenAdded);
         }
         
     }

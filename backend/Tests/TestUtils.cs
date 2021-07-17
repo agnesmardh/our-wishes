@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Tests
 {
-    public class TestUtils
+    public static class TestUtils
     {
         public static WishlistContext GetContext()
         {
@@ -21,14 +21,26 @@ namespace Tests
             
             return context;
         }
-        
-        public static void MockAuth(WishlistController controller, string testUserId)
+
+        private static ClaimsPrincipal MockUser(string testUserId)
         {
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[] {
                 new Claim(ClaimTypes.NameIdentifier, testUserId),
                 new Claim(ClaimTypes.Name, "test@somecompany.com")
             },"TestAuthentication"));
 
+            return user;
+        }
+        
+        public static void MockAuth(WishlistController controller, string testUserId)
+        {
+            var user = MockUser(testUserId);
+            controller.ControllerContext = new ControllerContext {HttpContext = new DefaultHttpContext {User = user}};
+        }
+        
+        public static void MockAuth(WishController controller, string testUserId)
+        {
+            var user = MockUser(testUserId);
             controller.ControllerContext = new ControllerContext {HttpContext = new DefaultHttpContext {User = user}};
         }
     }
