@@ -6,7 +6,7 @@ import { wishlistMock } from '../__mocks__/WishlistMock';
 
 describe('<Wishlists/>', () => {
   const renderWishlists = (wishlists: WishlistDTO[]) => {
-    return render(<Wishlists wishlists={wishlists} />);
+    return render(<Wishlists addWishlist={jest.fn()} wishlists={wishlists} />);
   };
   it.skip('should render wishlists', () => {
     const wishlists = renderWishlists([wishlistMock]);
