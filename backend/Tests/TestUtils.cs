@@ -32,13 +32,7 @@ namespace Tests
             return user;
         }
         
-        public static void MockAuth(WishlistController controller, string testUserId)
-        {
-            var user = MockUser(testUserId);
-            controller.ControllerContext = new ControllerContext {HttpContext = new DefaultHttpContext {User = user}};
-        }
-        
-        public static void MockAuth(WishController controller, string testUserId)
+        public static void MockAuth(BaseController controller, string testUserId)
         {
             var user = MockUser(testUserId);
             controller.ControllerContext = new ControllerContext {HttpContext = new DefaultHttpContext {User = user}};
