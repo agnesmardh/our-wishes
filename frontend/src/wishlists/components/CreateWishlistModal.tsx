@@ -54,7 +54,7 @@ export const CreateWishlistModal: React.FC<Props> = ({ show, onCloseModal }: Pro
             <Form.Label>Deadline</Form.Label>
             <Form.Control type="date" onChange={event => setDeadline(new Date(event.target.value))} />
             <Form.Control.Feedback type="invalid">Please provide a deadline for the wishlist</Form.Control.Feedback>
-            <Form.Text className="text-muted">The deadline is then the gifts are expected to be received.</Form.Text>
+            <Form.Text className="text-muted">The deadline is when the gifts are expected to be received.</Form.Text>
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>

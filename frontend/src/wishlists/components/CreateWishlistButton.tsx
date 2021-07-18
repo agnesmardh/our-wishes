@@ -20,7 +20,7 @@ const CreateButton = styled(Button)`
   position: fixed;
   bottom: 20px;
   left: 100%;
-  margin-left: -100px; /*104.5px is half of the button's width*/
+  margin-left: -100px;
   z-index: 100;
   display: block;
   height: 64px;
