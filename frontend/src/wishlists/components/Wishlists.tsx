@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { WishlistDTO } from '../types/WishlistDTO';
 import { Wishlist } from './Wishlist';
 import { Masonry, RenderComponentProps } from 'masonic';
-import { WishDTO } from '../types/WishDTO';
+import { CreateWishlistButton } from './CreateWishlistButton';
+import { CreateWishlistModal } from './CreateWishlistModal';
+import { CreateWishlistDTO } from '../types/CreateWishlistDTO';
+import { useCreateWishlist } from '../../hooks/UseCreateWishlist';
 
 interface Props {
   wishlists: WishlistDTO[];
+  addWishlist: (wishlist: WishlistDTO) => void;
 }
+
+const handleCreateWishlist = async (
+  createWishlist: (createWishlistDTO: CreateWishlistDTO) => Promise<WishlistDTO>,
+  createWishlistDTO: CreateWishlistDTO
+): Promise<WishlistDTO> => {
+  return await createWishlist(createWishlistDTO);
+};
 
 const WishlistCard = ({ index, data, width }: RenderComponentProps<WishlistDTO>) => {
   return (
@@ -16,41 +27,30 @@ const WishlistCard = ({ index, data, width }: RenderComponentProps<WishlistDTO>)
   );
 };
 
-const generateWish = (numberOfWishes: number): WishDTO[] => {
-  const wishesList: WishDTO[] = [];
-  for (let i = 0; i < numberOfWishes; i++) {
-    const wish: WishDTO = {
-      boughtBy: undefined,
-      id: `${i}`,
-      link: '',
-      title: `Title of wish ${i}`
-    };
-    wishesList.push(wish);
-  }
-  return wishesList;
-};
+export const Wishlists: React.FC<Props> = ({ wishlists, addWishlist }: Props) => {
+  const { createWishlist } = useCreateWishlist();
+  const [showCreateWishlistModal, setShowCreateWishlistModal] = useState(false);
 
-export const Wishlists: React.FC<Props> = ({ wishlists }: Props) => {
-  if (wishlists.length > 0) {
-    for (let i = 0; i < 15; i++) {
-      wishlists.push({
-        archived: '',
-        deadline: '',
-        id: `${i}`,
-        owner: wishlists[0].owner,
-        shareableLink: '',
-        title: `Wishlist #${i + 1}`,
-        wishes: generateWish(i + 4)
-      });
-    }
-  }
   return (
-    <Masonry
-      items={wishlists}
-      columnGutter={8}
-      columnWidth={500}
-      overscanBy={5}
-      render={({ index, data, width }) => WishlistCard({ index, data, width })}
-    />
+    <>
+      <Masonry
+        items={wishlists}
+        columnGutter={8}
+        columnWidth={500}
+        overscanBy={5}
+        render={({ index, data, width }) => WishlistCard({ index, data, width })}
+      />
+      <CreateWishlistButton onClick={() => setShowCreateWishlistModal(true)} />
+      <CreateWishlistModal
+        onCloseModal={async (createWishlistDTO, shouldCreateWishlist) => {
+          setShowCreateWishlistModal(false);
+          if (shouldCreateWishlist) {
+            const newWishlist = await handleCreateWishlist(createWishlist, createWishlistDTO);
+            addWishlist(newWishlist);
+          }
+        }}
+        show={showCreateWishlistModal}
+      />
+    </>
   );
 };

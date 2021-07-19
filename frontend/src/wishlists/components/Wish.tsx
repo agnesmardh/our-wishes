@@ -7,14 +7,10 @@ import { DeleteWishModal } from './DeleteWishModal';
 
 interface Props {
   wish: WishDTO;
+  deleteWish: (wish: WishDTO) => Promise<void>;
 }
 
-const deleteWish = async (wish: WishDTO): Promise<void> => {
-  console.log(`Deleting Wish: ${wish.id} (${wish.title})`);
-  return Promise.resolve();
-};
-
-export const Wish: React.FC<Props> = ({ wish }: Props) => {
+export const Wish: React.FC<Props> = ({ wish, deleteWish }: Props) => {
   const [showDeleteWishModal, setShowDeleteWishModal] = useState<boolean>(false);
   return (
     <span>
@@ -24,19 +20,23 @@ export const Wish: React.FC<Props> = ({ wish }: Props) => {
         onCloseModal={async shouldDeleteWish => {
           if (shouldDeleteWish) {
             await deleteWish(wish);
+          } else {
+            setShowDeleteWishModal(false);
           }
-          setShowDeleteWishModal(false);
         }}
       />
-      <ListGroupItem action>
+      <ListGroupItem>
         <Row>
           <Col>{wish.title}</Col>
           <DeleteColumn>
-            <TrashIcon
+            <DeleteButton
+              aria-label={'delete'}
               onClick={() => {
                 setShowDeleteWishModal(true);
               }}
-            />
+            >
+              <TrashIcon />
+            </DeleteButton>
           </DeleteColumn>
         </Row>
       </ListGroupItem>
@@ -48,6 +48,11 @@ const DeleteColumn = styled(Col)`
   text-align: right;
   justify-content: center;
   align-self: center;
+`;
+
+const DeleteButton = styled.button`
+  border: 0;
+  background: transparent;
 `;
 
 const TrashIcon = styled(Trash)`
