@@ -35,10 +35,17 @@ namespace backend.Controllers
         }
         
         [HttpGet("{id}")]
-        public ActionResult<UserDto> GetUser(string id)
+        public async Task<ActionResult<UserDto>> GetUser(string id)
         {
-            var user = _context.Users.First(u => u.UserId == id);
+            var userAuth = await GetCurrentUser();
 
+            if (userAuth.UserId != id)
+            {
+                return Unauthorized();
+            }
+
+            var user = _context.Users.First(u => u.UserId == id);
+            
             if (user == null)
             {
                 return NotFound();

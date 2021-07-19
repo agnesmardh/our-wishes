@@ -29,12 +29,7 @@ namespace Tests
             var controller = new WishController(_context);
             TestUtils.MockAuth(controller, testUserId);
             
-            var wishToAdd = new WishDto.CreateWishDto()
-            {
-                Link = "",
-                Title = "Test",
-                WishlistId = 1
-            };
+            var wishToAdd = new WishDto.CreateWishDto(title: "Test", link: "", wishlistId: 1);
 
             var countBefore = _context.Wishes.Count();
 
@@ -59,13 +54,8 @@ namespace Tests
             _context = TestUtils.GetContext();
             var controller = new WishController(_context);
             TestUtils.MockAuth(controller, "2");
-            
-            var wishToAdd = new WishDto.CreateWishDto()
-            {
-                Link = "",
-                Title = "Test",
-                WishlistId = 1
-            };
+
+            var wishToAdd = new WishDto.CreateWishDto(title: "test", link: "", wishlistId: 1);
 
             var countBefore = _context.Wishes.Count();
 
@@ -85,13 +75,8 @@ namespace Tests
             _context = TestUtils.GetContext();
             var controller = new WishController(_context);
             TestUtils.MockAuth(controller, testUserId);
-            
-            var wishToAdd = new WishDto.CreateWishDto()
-            {
-                Link = "",
-                Title = "Test",
-                WishlistId = 20
-            };
+
+            var wishToAdd = new WishDto.CreateWishDto(title: "Test", link: "", wishlistId: 20);
 
             var countBefore = _context.Wishes.Count();
 
