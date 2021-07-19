@@ -62,7 +62,7 @@ namespace Tests
         }
         
         [Fact]
-        public void NotPossibleGetOtherUSer()
+        public void NotPossibleGetOtherUser()
         {
             _context = TestUtils.GetContext();
             var controller = new UserController(_context);
