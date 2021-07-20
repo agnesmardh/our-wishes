@@ -81,12 +81,12 @@ namespace Tests
             var countBefore = _context.Wishes.Count();
 
             var res = await controller.CreateWish(wishToAdd);
-            var statusResult = res.Result as BadRequestObjectResult;
+            var statusResult = res.Result as NotFoundResult;
             
             var countAfter = _context.Wishes.Count();
             
             Assert.NotNull(statusResult);
-            Assert.Equal(statusResult.StatusCode, StatusCodes.Status400BadRequest);
+            Assert.Equal(statusResult.StatusCode, StatusCodes.Status404NotFound);
             Assert.Equal(countBefore, countAfter);
         }
 

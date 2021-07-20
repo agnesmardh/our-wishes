@@ -29,7 +29,7 @@ namespace backend.Controllers
             var wishlist = _context.Wishlists.FirstOrDefault(x => x.WishlistId == listId);
             if (wishlist == null)
             {
-                return BadRequest("Wishlist does not exist");
+                return NotFound();
             }
             
             var isOwner = _context.Wishlists.Any(x => x.WishlistId == listId && x.Owner == user);
