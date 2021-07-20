@@ -19,5 +19,20 @@ namespace backend.models
         {
             return new(wish.WishId, wish.Title, UserDto.ToDto(wish.BoughtBy), wish.Link);
         }
+        
+        public class CreateWishDto
+        {
+            public CreateWishDto(string title, string link, int wishlistId)
+            {
+                Title = title;
+                Link = link;
+                WishlistId = wishlistId;
+            }
+
+            public string Title { get; set; }
+            public string Link { get; set; }
+            public int WishlistId { get; set; }
+            
+        }
     }
 }

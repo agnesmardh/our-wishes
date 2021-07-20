@@ -1,15 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, Col, ListGroup, Row } from 'react-bootstrap';
 import { WishlistDTO } from '../types/WishlistDTO';
 import styled from 'styled-components';
 import { Wish } from './Wish';
+import { WishService } from '../../service/WishService';
 
 interface Props {
   wishlist: WishlistDTO;
 }
 
 export const Wishlist: React.FC<Props> = ({ wishlist }: Props) => {
-  const wishes = wishlist.wishes.map(wish => <Wish key={wish.id} wish={wish} />);
+  const [wishes, setWishes] = useState(wishlist.wishes);
+
+  const wishComponents = wishes.map(wish => (
+    <Wish
+      key={wish.id}
+      deleteWish={async wishToDelete => {
+        await WishService.deleteWish(wishToDelete);
+        setWishes(wishes.filter(wish => wish.id !== wishToDelete.id));
+      }}
+      wish={wish}
+    />
+  ));
 
   return (
     <Card>
@@ -20,7 +32,7 @@ export const Wishlist: React.FC<Props> = ({ wishlist }: Props) => {
         </Row>
       </Card.Header>
       <Card.Body>
-        <ListGroup>{wishes}</ListGroup>
+        <ListGroup>{wishComponents}</ListGroup>
       </Card.Body>
     </Card>
   );

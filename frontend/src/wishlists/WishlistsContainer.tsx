@@ -3,9 +3,10 @@ import { Wishlists } from './components/Wishlists';
 import { Col, Row } from 'react-bootstrap';
 import { useWishlists } from '../hooks/UseWishlists';
 import { CenteredLoadingIndicator } from '../common/components/loading-indicator/CenteredLoadingIndicator';
+import { WishlistDTO } from './types/WishlistDTO';
 
 export const WishlistsContainer: React.FC = () => {
-  const wishlists = useWishlists();
+  const [wishlists, setWishlists] = useWishlists();
 
   if (!wishlists) {
     return <CenteredLoadingIndicator />;
@@ -14,7 +15,10 @@ export const WishlistsContainer: React.FC = () => {
   return (
     <Row>
       <Col>
-        <Wishlists wishlists={wishlists} />
+        <Wishlists
+          wishlists={wishlists}
+          addWishlist={(wishlist: WishlistDTO) => setWishlists([...wishlists, wishlist])}
+        />
       </Col>
     </Row>
   );
