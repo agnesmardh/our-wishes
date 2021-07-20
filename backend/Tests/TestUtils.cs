@@ -22,19 +22,19 @@ namespace Tests
             return context;
         }
 
-        private static ClaimsPrincipal MockUser(string testUserId)
+        private static ClaimsPrincipal MockUser(string testUserId, string email)
         {
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[] {
                 new Claim(ClaimTypes.NameIdentifier, testUserId),
-                new Claim(ClaimTypes.Name, "test@somecompany.com")
+                new Claim(ClaimTypes.Name, email)
             },"TestAuthentication"));
 
             return user;
         }
         
-        public static void MockAuth(BaseController controller, string testUserId)
+        public static void MockAuth(BaseController controller, string testUserId, string email = "test@somecompany.com")
         {
-            var user = MockUser(testUserId);
+            var user = MockUser(testUserId, email);
             controller.ControllerContext = new ControllerContext {HttpContext = new DefaultHttpContext {User = user}};
         }
     }
