@@ -8,7 +8,7 @@
     "@testing-library/user-event": "^12.1.10",
     "aws-amplify": "^3.3.26",
     "aws-amplify-react": "^4.2.30",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "bootstrap": "^4.6.0",
     "masonic": "^3.4.1",
     "react": "^17.0.2",
